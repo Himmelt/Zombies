@@ -1,0 +1,9 @@
+name: Zombies
+main: org.soraworld.zombies.Zombies
+version: 0.0.1
+commands:
+  zombie:
+    description: Zombies main command
+    usage: §c[Zombie]§5参数错误,您可以使用/Zombie help命令排查错误.
+    permission: zombie
+    permission-message: §c[Zombies]§5您没有<zombie>权限
