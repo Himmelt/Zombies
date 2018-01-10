@@ -1,6 +1,7 @@
 package org.soraworld.zombies.task;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -55,6 +56,14 @@ public class SpawnTask extends BukkitRunnable {
                         zombie.addPotionEffect(FIRE_RESISTANCE);
                         System.out.println("Spawn....");
                     }
+                }
+
+                public Location randomLocation() {
+                    Location origin = player.getLocation();
+                    double radius = 5 + config.spawnRadius() * Math.random();
+                    int x = (int) (origin.getBlockX() + Math.sin(radius));
+                    int z = (int) (origin.getBlockZ() + Math.cos(radius));
+
                 }
             }.runTask(Zombies.getInstance());
         }
