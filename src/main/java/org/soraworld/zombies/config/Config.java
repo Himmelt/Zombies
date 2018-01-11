@@ -24,8 +24,8 @@ public class Config {
     private int killCoolTime = 300;
     private double babyChance = 0.0F;
     private boolean noDrops = false;
+    private boolean debug = false;
     private final HashSet<String> allowWorlds = new HashSet<>();
-
 
     private final File file;
     private final HashMap<String, Integer> kills = new HashMap<>();
@@ -70,6 +70,7 @@ public class Config {
             killCoolTime = config.getInt("killCoolTime");
             babyChance = config.getDouble("babyChance");
             noDrops = config.getBoolean("noDrops");
+            debug = config.getBoolean("debug");
             allowWorlds.clear();
             allowWorlds.addAll(config.getStringList("allowWorlds"));
 
@@ -89,6 +90,7 @@ public class Config {
             config.set("killCoolTime", killCoolTime);
             config.set("babyChance", babyChance);
             config.set("noDrops", noDrops);
+            config.set("debug", debug);
             config.set("allowWorlds", new ArrayList<>(allowWorlds));
             config.save(file);
         } catch (IOException e) {
@@ -100,15 +102,15 @@ public class Config {
         return noDrops;
     }
 
+    public boolean debug() {
+        return debug;
+    }
+
     public ArrayList<ItemStack> drops() {
         return null;
     }
 
     public int randSpeed() {
-        return 0;
-    }
-
-    public int speedDuration() {
         return 0;
     }
 
@@ -219,5 +221,9 @@ public class Config {
             kills.put(name, kill);
         }
         return kill >= killCoolLimit;
+    }
+
+    public int killCoolLimit() {
+        return killCoolLimit;
     }
 }

@@ -122,10 +122,10 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (args.isEmpty()) {
-                    sender.sendMessage("Refresh time is " + config.refresh() + " s");
+                    sender.sendMessage("Refresh time is " + config.refresh() / 20 + " s");
                 } else if (args.get(0).matches("[0-9]+")) {
                     config.refresh(Integer.valueOf(args.get(0)));
-                    sender.sendMessage("Refresh time is set to " + config.refresh());
+                    sender.sendMessage("Refresh time is set to " + config.refresh() + " s");
                 } else {
                     sender.sendMessage("/zombie refresh [time]");
                 }
