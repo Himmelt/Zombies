@@ -20,7 +20,8 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (config.noDrops() && event.getEntity() instanceof Zombie) {
+        if (config.customDrops() && event.getEntity() instanceof Zombie) {
+            event.setDroppedExp(config.randDropExp());
             event.getDrops().clear();
         }
     }

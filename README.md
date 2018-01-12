@@ -21,8 +21,10 @@ killCoolLimit: 20
 killCoolTime: 300
 #生成小僵尸的概率
 babyChance: 0.3
-#击杀僵尸时不掉落物品，true:不掉落；false：正常掉落
-noDrops: true
+#击杀僵尸自定义掉落物品，true:自定义掉落；false：正常掉落
+customDrops: true
+#击杀僵尸自定义经验掉落范围
+dropExp: 5-7
 #调试模式
 debug: false
 #允许生成僵尸的世界名(列表)
@@ -40,4 +42,5 @@ allowWorlds:
 /zombie health [min-max]        查看/设置 僵尸血量范围
 /zombie radius [min-max]        查看/设置 僵尸生成位置距离玩家半径范围
 /zombie refresh [time]          查看/设置 僵尸生成(刷新)时间(秒)
+/zombie debug                   切换调式模式
 ```

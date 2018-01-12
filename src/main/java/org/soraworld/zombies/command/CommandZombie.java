@@ -132,6 +132,14 @@ public class CommandZombie extends IICommand {
                 return true;
             }
         });
+        addSub(new IICommand("debug") {
+            @Override
+            public boolean execute(CommandSender sender, ArrayList<String> args) {
+                config.debug(!config.debug());
+                sender.sendMessage("Debug mode is turned " + (config.debug() ? "ON" : "OFF"));
+                return true;
+            }
+        });
     }
 
 }

@@ -56,7 +56,7 @@ public class SpawnTask extends BukkitRunnable {
         if (player.getGameMode() == GameMode.SURVIVAL && config.isAllow(player.getWorld().getName())) {
             if (config.killCool(player.getName())) {
                 if (config.debug()) {
-                    System.out.println("[Zombies] " + player.getName() + " has killed " + config.killCoolLimit() + " zombies.");
+                    System.out.println("[Zombies] " + player.getName() + " has killed " + config.getKills(player.getName()) + " zombies.");
                 }
             } else {
                 new BukkitRunnable() {
@@ -82,6 +82,7 @@ public class SpawnTask extends BukkitRunnable {
                                 zombie.setBaby(Math.random() < mutate);
                                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, config.randSpeed()), false);
                                 zombie.addPotionEffect(FIRE_RESISTANCE);
+                                zombie.setCanPickupItems(false);
                                 if (config.debug()) {
                                     System.out.println("[Zombies] Spawning around " + player.getName());
                                 }

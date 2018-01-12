@@ -3,7 +3,7 @@ main: org.soraworld.zombies.Zombies
 version: 0.0.1
 commands:
   zombie:
-    description: Zombies main command
-    usage: §c[Zombie]§5参数错误,您可以使用/Zombie help命令排查错误.
+    description: "Zombies - https://github.com/Himmelt/Zombies"
+    usage: "[Zombies] /zombie save|reload|allow|disallow|speed|health|radius|refresh|debug"
     permission: zombie
-    permission-message: §c[Zombies]§5您没有<zombie>权限
+    permission-message: "[Zombies] You have no permission <zombie>"

@@ -13,17 +13,19 @@ import java.util.HashSet;
 public class Config {
 
     private int minSpeed = 0;
-    private int maxSpeed = 2;
+    private int maxSpeed = 1;
     private int minHealth = 10;
     private int maxHealth = 20;
-    private int minSpawnRadius = 20;
-    private int maxSpawnRadius = 20;
+    private int minSpawnRadius = 15;
+    private int maxSpawnRadius = 25;
     private int refresh = 5;
-    private int spawnLimit = 80;
+    private int spawnLimit = 30;
     private int killCoolLimit = 80;
     private int killCoolTime = 300;
     private double babyChance = 0.0F;
-    private boolean noDrops = false;
+    private boolean customDrops = false;
+    private int minDropExp = 0;
+    private int maxDropExp = 0;
     private boolean debug = false;
     private final HashSet<String> allowWorlds = new HashSet<>();
 
@@ -63,13 +65,19 @@ public class Config {
                 minSpawnRadius = Integer.valueOf(ss[0]);
                 maxSpawnRadius = Integer.valueOf(ss[1]);
             }
-            //
             refresh = config.getInt("refresh");
             spawnLimit = config.getInt("spawnLimit");
             killCoolLimit = config.getInt("killCoolLimit");
             killCoolTime = config.getInt("killCoolTime");
             babyChance = config.getDouble("babyChance");
-            noDrops = config.getBoolean("noDrops");
+            customDrops = config.getBoolean("customDrops");
+            // dropExp
+            String dropExp = config.getString("dropExp");
+            if (dropExp != null && dropExp.matches("[0-9]+-[0-9]+")) {
+                String[] ss = dropExp.split("-");
+                minDropExp = Integer.valueOf(ss[0]);
+                maxDropExp = Integer.valueOf(ss[1]);
+            }
             debug = config.getBoolean("debug");
             allowWorlds.clear();
             allowWorlds.addAll(config.getStringList("allowWorlds"));
@@ -89,7 +97,8 @@ public class Config {
             config.set("killCoolLimit", killCoolLimit);
             config.set("killCoolTime", killCoolTime);
             config.set("babyChance", babyChance);
-            config.set("noDrops", noDrops);
+            config.set("customDrops", customDrops);
+            config.set("dropExp", minDropExp + "-" + maxDropExp);
             config.set("debug", debug);
             config.set("allowWorlds", new ArrayList<>(allowWorlds));
             config.save(file);
@@ -98,8 +107,12 @@ public class Config {
         }
     }
 
-    public boolean noDrops() {
-        return noDrops;
+    public boolean customDrops() {
+        return customDrops;
+    }
+
+    public void debug(boolean debug) {
+        this.debug = debug;
     }
 
     public boolean debug() {
@@ -223,7 +236,12 @@ public class Config {
         return kill >= killCoolLimit;
     }
 
-    public int killCoolLimit() {
-        return killCoolLimit;
+    public int getKills(String name) {
+        Integer kill = kills.get(name);
+        return kill == null ? 0 : kill;
+    }
+
+    public int randDropExp() {
+        return (int) (minDropExp + Math.abs(maxDropExp - minDropExp) * Math.random());
     }
 }
