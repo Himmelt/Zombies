@@ -45,7 +45,7 @@ public class SpawnTask extends BukkitRunnable {
             }
         }
         for (String name : cools.keySet()) {
-            if (!Bukkit.getPlayer(name).isOnline() && System.currentTimeMillis() - cools.get(name) > config.killCoolTime() * 1000) {
+            if (Bukkit.getPlayer(name) == null && System.currentTimeMillis() - cools.get(name) > config.killCoolTime() * 1000) {
                 cools.remove(name);
                 config.clearKills(name);
             }
