@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.soraworld.zombies.config.Config;
-import org.soraworld.zombies.flans.FlansPlugin;
+import org.soraworld.zombies.flans.Flans;
 
 public class EventListener implements Listener {
 
@@ -44,7 +44,13 @@ public class EventListener implements Listener {
                 }
             } else {
                 Entity damager = event.getDamager();
-                System.out.println(FlansPlugin.getBulletShooter(damager));
+                System.out.println(damager);
+                try {
+                    Flans.getInstance().getBulletShooter(damager);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    System.out.println("Exception............................");
+                }
             }
         }
     }
