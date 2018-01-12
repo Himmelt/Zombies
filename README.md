@@ -44,3 +44,7 @@ allowWorlds:
 /zombie refresh [time]          查看/设置 僵尸生成(刷新)时间(秒)
 /zombie debug                   切换调式模式
 ```
+public Entity func_76346_g()
+    {
+        return null;
+    }

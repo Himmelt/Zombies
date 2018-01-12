@@ -1,5 +1,6 @@
 package org.soraworld.zombies.listener;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Zombie;
@@ -9,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.soraworld.zombies.config.Config;
+import org.soraworld.zombies.flans.FlansPlugin;
 
 public class EventListener implements Listener {
 
@@ -41,7 +43,8 @@ public class EventListener implements Listener {
                     config.addKill(((Player) source).getName());
                 }
             } else {
-                System.out.println(">>>> Other Damage: " + event.getDamager().getClass());
+                Entity damager = event.getDamager();
+                System.out.println(FlansPlugin.getBulletShooter(damager));
             }
         }
     }
