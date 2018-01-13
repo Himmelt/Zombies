@@ -222,9 +222,14 @@ public class Config {
     }
 
     public void addKill(String name) {
+        if (name == null || name.isEmpty()) {
+            if (debug) System.out.println("[Zombies] Player's name cant be empty.");
+            return;
+        }
         Integer kill = kills.get(name);
         if (kill == null) kill = 0;
         kills.put(name, kill + 1);
+        if (debug) System.out.println("[Zombies] " + name + " has killed " + (kill + 1) + " zombies.");
     }
 
     public boolean killCool(String name) {
@@ -232,6 +237,9 @@ public class Config {
         if (kill == null) {
             kill = 0;
             kills.put(name, kill);
+        }
+        if (debug && kill >= killCoolLimit) {
+            System.out.println("[Zombies] " + name + "'s kills " + kill + " is > cool_limit " + killCoolLimit + "");
         }
         return kill >= killCoolLimit;
     }

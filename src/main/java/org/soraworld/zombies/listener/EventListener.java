@@ -1,6 +1,5 @@
 package org.soraworld.zombies.listener;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Zombie;
@@ -43,13 +42,12 @@ public class EventListener implements Listener {
                     config.addKill(((Player) source).getName());
                 }
             } else {
-                Entity damager = event.getDamager();
-                System.out.println(damager);
                 try {
-                    Flans.getInstance().getBulletShooter(damager);
+                    String shooter = Flans.getInstance().getBulletShooter(event.getDamager());
+                    if (config.debug()) System.out.println("[Zombies] Shooter's name is " + shooter);
+                    config.addKill(shooter);
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    System.out.println("Exception............................");
                 }
             }
         }

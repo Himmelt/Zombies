@@ -3,6 +3,7 @@ package org.soraworld.zombies.flans;
 import org.bukkit.entity.Entity;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class Flans {
 
@@ -13,9 +14,10 @@ public class Flans {
     private Field fieldEntity;
     private Field owner;
     private Field thrower;
+    private Method getName;
 
     private Flans() {
-        System.out.println("_________________new__________________");
+        System.out.println("[Zombies] get flans mod support!");
         try {
             CraftEntity = Class.forName("org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity");
             EntityBullet = Class.forName("com.flansmod.common.guns.EntityBullet");
@@ -27,18 +29,12 @@ public class Flans {
             owner.setAccessible(true);
             thrower = EntityGrenade.getDeclaredField("thrower");
             thrower.setAccessible(true);
+            //net.minecraft.command.ICommandSender#getCommandSenderName
+            getName = EntityPlayer.getMethod("func_70005_c_");
+            getName.setAccessible(true);
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        System.out.println("_________________mid__________________");
-        System.out.println(CraftEntity);
-        System.out.println(EntityBullet);
-        System.out.println(EntityGrenade);
-        System.out.println(EntityPlayer);
-        System.out.println(fieldEntity);
-        System.out.println(owner);
-        System.out.println(thrower);
-        System.out.println("_________________end__________________");
     }
 
     private static Flans instance;
@@ -47,26 +43,24 @@ public class Flans {
         return instance == null ? instance = new Flans() : instance;
     }
 
-    public String getBulletShooter(Entity bullet) {
+    public String getBulletShooter(Entity cause) {
         try {
-            if (fieldEntity != null && bullet != null) {
-                System.out.println(bullet.getClass());
-                Object object = fieldEntity.get(bullet);
-                if (object != null) {
-                    System.out.println(object.getClass());
+            if (fieldEntity != null && cause != null) {
+                Object bullet = fieldEntity.get(cause);
+                if (bullet != null) {
                     if (owner != null) {
-                        Object player = owner.get(object);
-                        if (player != null) {
-                            System.out.println(player.getClass());
-                            System.out.println(player);
+                        Object player = owner.get(bullet);
+                        if (player != null && EntityPlayer != null && EntityPlayer.isAssignableFrom(player.getClass())) {
+                            if (getName != null) {
+                                return (String) getName.invoke(player);
+                            }
                         }
                     }
                 }
             }
-        } catch (IllegalAccessException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
-        System.out.println("*******************************************8");
-        return "null";
+        return "";
     }
 }
