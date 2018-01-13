@@ -3,6 +3,7 @@ package org.soraworld.zombies.config;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.soraworld.zombies.scoreboard.ScoreBoards;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 
 public class Config {
 
+    private String lang = "en_us";
     private int minSpeed = 0;
     private int maxSpeed = 1;
     private int minHealth = 10;
@@ -26,15 +28,19 @@ public class Config {
     private boolean customDrops = false;
     private int minDropExp = 0;
     private int maxDropExp = 0;
+    private int displaySlot = 0;
     private boolean debug = false;
     private final HashSet<String> allowWorlds = new HashSet<>();
 
     private final File file;
+    private final LangKeys langKeys;
+    private final ScoreBoards killsBoard = new ScoreBoards();
     private final HashMap<String, Integer> kills = new HashMap<>();
     private final YamlConfiguration config = new YamlConfiguration();
 
     public Config(File file) {
         this.file = new File(file, "config.yml");
+        this.langKeys = new LangKeys(new File(file, "lang"));
     }
 
     public void load() {
@@ -44,6 +50,10 @@ public class Config {
         }
         try {
             config.load(file);
+            lang = config.getString("lang");
+            if (lang == null || lang.isEmpty()) {
+                lang = "en_us";
+            }
             // speed
             String speed = config.getString("speed");
             if (speed != null && speed.matches("[0-9]+-[0-9]+")) {
@@ -79,16 +89,22 @@ public class Config {
                 maxDropExp = Integer.valueOf(ss[1]);
             }
             debug = config.getBoolean("debug");
+            displaySlot = config.getInt("displaySlot");
             allowWorlds.clear();
             allowWorlds.addAll(config.getStringList("allowWorlds"));
 
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+        langKeys.setLang(lang);
+        langKeys.load();
+        killsBoard.setDisplaySlot(displaySlot);
+        killsBoard.setDisplayName(LangKeys.format("scoreboardDisplay"));
     }
 
     public void save() {
         try {
+            config.set("lang", lang);
             config.set("speed", minSpeed + "-" + maxSpeed);
             config.set("health", minHealth + "-" + maxHealth);
             config.set("spawnRadius", minSpawnRadius + "-" + maxSpawnRadius);
@@ -99,6 +115,7 @@ public class Config {
             config.set("babyChance", babyChance);
             config.set("customDrops", customDrops);
             config.set("dropExp", minDropExp + "-" + maxDropExp);
+            config.set("displaySlot", displaySlot);
             config.set("debug", debug);
             config.set("allowWorlds", new ArrayList<>(allowWorlds));
             config.save(file);
@@ -229,7 +246,13 @@ public class Config {
         Integer kill = kills.get(name);
         if (kill == null) kill = 0;
         kills.put(name, kill + 1);
+        killsBoard.update(name, kill + 1);
         if (debug) System.out.println("[Zombies] " + name + " has killed " + (kill + 1) + " zombies.");
+    }
+
+    public void displaySlot(int slot) {
+        displaySlot = slot;
+        killsBoard.setDisplaySlot(slot);
     }
 
     public boolean killCool(String name) {
@@ -244,12 +267,19 @@ public class Config {
         return kill >= killCoolLimit;
     }
 
-    public int getKills(String name) {
-        Integer kill = kills.get(name);
-        return kill == null ? 0 : kill;
-    }
-
     public int randDropExp() {
         return (int) (minDropExp + Math.abs(maxDropExp - minDropExp) * Math.random());
+    }
+
+    public int displaySlot() {
+        return displaySlot;
+    }
+
+    public String lang() {
+        return lang;
+    }
+
+    public void lang(String lang) {
+        if (lang != null && !lang.isEmpty()) this.lang = lang;
     }
 }

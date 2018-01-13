@@ -11,18 +11,8 @@ import org.soraworld.zombies.util.Lists;
 
 public class Zombies extends JavaPlugin {
 
-    private static Zombies instance;
-
     private Config config;
     private CommandZombie command;
-
-    public Zombies() {
-        instance = this;
-    }
-
-    public static Zombies getInstance() {
-        return instance;
-    }
 
     @Override
     public void onEnable() {

@@ -140,6 +140,32 @@ public class CommandZombie extends IICommand {
                 return true;
             }
         });
+        addSub(new IICommand("slot") {
+            @Override
+            public boolean execute(CommandSender sender, ArrayList<String> args) {
+                if (args.isEmpty()) {
+                    sender.sendMessage("[Zombies] ScoreBoard display slot is " + config.displaySlot());
+                } else if (args.get(0).matches("[0-3]")) {
+                    config.displaySlot(Integer.valueOf(args.get(0)));
+                    sender.sendMessage("[Zombies] ScoreBoard display slot is set to " + config.displaySlot());
+                } else {
+                    sender.sendMessage("[Zombies] parameters incorrect");
+                }
+                return true;
+            }
+        });
+        addSub(new IICommand("lang") {
+            @Override
+            public boolean execute(CommandSender sender, ArrayList<String> args) {
+                if (args.isEmpty()) {
+                    sender.sendMessage("[Zombies] Lang is " + config.lang());
+                } else {
+                    config.lang(args.get(0));
+                    sender.sendMessage("[Zombies] Lang is set to " + config.lang());
+                }
+                return true;
+            }
+        });
     }
 
 }
