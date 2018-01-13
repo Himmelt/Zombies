@@ -14,7 +14,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.soraworld.zombies.config.Config;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class SpawnTask extends BukkitRunnable {
 
@@ -43,10 +45,12 @@ public class SpawnTask extends BukkitRunnable {
                 config.clearKills(player.getName());
             }
         }
-        for (String name : cools.keySet()) {
-            if (Bukkit.getPlayer(name) == null && System.currentTimeMillis() - cools.get(name) > config.killCoolTime() * 1000) {
-                cools.remove(name);
-                config.clearKills(name);
+        Iterator<Map.Entry<String, Long>> it = cools.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Long> entry = it.next();
+            if (Bukkit.getPlayer(entry.getKey()) == null && System.currentTimeMillis() - entry.getValue() > config.killCoolTime() * 1000) {
+                it.remove();
+                config.clearKills(entry.getKey());
             }
         }
     }

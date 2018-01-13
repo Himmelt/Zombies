@@ -2,12 +2,9 @@ package org.soraworld.zombies.config;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.yaml.snakeyaml.DumperOptions;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 public class LangKeys {
 
@@ -22,17 +19,6 @@ public class LangKeys {
         this.folder = folder;
         this.lang = "en_us";
         this.file = new File(folder, "en_us.yml");
-        try {
-            Field options = YamlConfiguration.class.getDeclaredField("yamlOptions");
-            options.setAccessible(true);
-            Method setAllowUnicode = DumperOptions.class.getDeclaredMethod("setAllowUnicode", boolean.class);
-            setAllowUnicode.setAccessible(true);
-            Object opt = options.get(config);
-            setAllowUnicode.invoke(opt, true);
-            System.out.println("[Zombies] unicode support success.");
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
         instance = this;
     }
 
@@ -65,7 +51,7 @@ public class LangKeys {
         }
         String value = instance.config.getString(key);
         if (value == null) return key;
-        return String.format(value.replace("&", "§"), args);
+        return String.format(value.replace("&", "\u00a7"), args);
     }
 
 }

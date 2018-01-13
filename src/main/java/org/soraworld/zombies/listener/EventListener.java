@@ -31,20 +31,20 @@ public class EventListener implements Listener {
     public void onEntityDamaged(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Zombie) {
             Zombie zombie = (Zombie) event.getEntity();
+
+            if (zombie.getHealth() - event.getDamage() > 0.0D) return;
+
             if (event.getDamager() instanceof Player) {
                 Player player = (Player) event.getDamager();
-                if (zombie.getHealth() - event.getDamage() <= 0.0D) {
-                    config.addKill(player.getName());
-                }
+                config.addKill(player.getName());
             } else if (event.getDamager() instanceof Projectile) {
                 ProjectileSource source = ((Projectile) event.getDamager()).getShooter();
-                if (source instanceof Player && zombie.getHealth() - event.getDamage() <= 0.0D) {
+                if (source instanceof Player) {
                     config.addKill(((Player) source).getName());
                 }
             } else {
                 try {
-                    String shooter = Flans.getInstance().getBulletShooter(event.getDamager());
-                    if (config.debug()) System.out.println("[Zombies] Shooter's name is " + shooter);
+                    String shooter = Flans.getInstance().getShooter(event.getDamager());
                     config.addKill(shooter);
                 } catch (Throwable e) {
                     e.printStackTrace();

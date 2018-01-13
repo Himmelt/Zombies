@@ -43,15 +43,22 @@ public class Flans {
         return instance == null ? instance = new Flans() : instance;
     }
 
-    public String getBulletShooter(Entity cause) {
+    public String getShooter(Entity cause) {
         try {
             if (fieldEntity != null && cause != null) {
-                Object bullet = fieldEntity.get(cause);
-                if (bullet != null) {
-                    if (owner != null) {
-                        Object player = owner.get(bullet);
-                        if (player != null && EntityPlayer != null && EntityPlayer.isAssignableFrom(player.getClass())) {
-                            if (getName != null) {
+                Object source = fieldEntity.get(cause);
+                if (source != null) {
+                    if (EntityBullet != null && EntityBullet.isAssignableFrom(source.getClass())) {
+                        if (owner != null) {
+                            Object player = owner.get(source);
+                            if (player != null && EntityPlayer != null && getName != null && EntityPlayer.isAssignableFrom(player.getClass())) {
+                                return (String) getName.invoke(player);
+                            }
+                        }
+                    } else if (EntityGrenade != null && EntityGrenade.isAssignableFrom(source.getClass())) {
+                        if (thrower != null) {
+                            Object player = thrower.get(source);
+                            if (player != null && EntityPlayer != null && getName != null && EntityPlayer.isAssignableFrom(player.getClass())) {
                                 return (String) getName.invoke(player);
                             }
                         }

@@ -239,10 +239,7 @@ public class Config {
     }
 
     public void addKill(String name) {
-        if (name == null || name.isEmpty()) {
-            if (debug) System.out.println("[Zombies] Player's name cant be empty.");
-            return;
-        }
+        if (name == null || name.isEmpty()) return;
         Integer kill = kills.get(name);
         if (kill == null) kill = 0;
         kills.put(name, kill + 1);
