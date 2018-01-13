@@ -4,6 +4,8 @@
 
 ### 配置
 ```yaml
+#语言
+lang: zh_cn
 #僵尸行走速度随机范围(迅捷药水效果等级)
 speed: 0-2
 #僵尸血量随机范围
@@ -27,6 +29,8 @@ customDrops: true
 dropExp: 5-7
 #调试模式
 debug: false
+#记分板显示位置，1:头顶 2:玩家列表 3:屏幕右侧
+displaySlot: 1
 #允许生成僵尸的世界名(列表)
 allowWorlds:
 - world
@@ -43,8 +47,6 @@ allowWorlds:
 /zombie radius [min-max]        查看/设置 僵尸生成位置距离玩家半径范围
 /zombie refresh [time]          查看/设置 僵尸生成(刷新)时间(秒)
 /zombie debug                   切换调式模式
+/zombie slot [slot]             查看/设置 记分板显示位置
+/zombie lang [en_us|zh_cn|...]  查看/设置 语言
 ```
-public Entity func_76346_g()
-    {
-        return null;
-    }
