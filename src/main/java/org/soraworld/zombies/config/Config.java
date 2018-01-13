@@ -280,6 +280,11 @@ public class Config {
     }
 
     public void lang(String lang) {
-        if (lang != null && !lang.isEmpty()) this.lang = lang;
+        if (lang != null && !lang.isEmpty()) {
+            this.lang = lang;
+            langKeys.setLang(lang);
+            langKeys.load();
+            killsBoard.setDisplayName(LangKeys.format("scoreboardDisplay"));
+        }
     }
 }
