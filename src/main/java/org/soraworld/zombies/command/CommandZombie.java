@@ -3,6 +3,7 @@ package org.soraworld.zombies.command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.soraworld.zombies.config.Config;
+import org.soraworld.zombies.config.LangKeys;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 config.save();
-                sender.sendMessage("config saved!");
+                sender.sendMessage(LangKeys.format("configSaved"));
                 return true;
             }
         });
@@ -22,7 +23,7 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 config.load();
-                sender.sendMessage("config reloaded!");
+                sender.sendMessage(LangKeys.format("configReloaded"));
                 return true;
             }
         });
@@ -31,20 +32,21 @@ public class CommandZombie extends IICommand {
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (sender instanceof Player) {
                     if (args.isEmpty()) {
-                        config.allow(((Player) sender).getWorld().getName());
-                        sender.sendMessage("World [" + ((Player) sender).getWorld().getName() + "] is allowed!");
+                        String worldName = ((Player) sender).getWorld().getName();
+                        config.allow(worldName);
+                        sender.sendMessage(LangKeys.format("worldAllowed", worldName));
                     } else {
                         config.allow(args.get(0));
-                        sender.sendMessage("World [" + args.get(0) + "] is allowed!");
+                        sender.sendMessage(LangKeys.format("worldAllowed", args.get(0)));
                     }
                     return true;
                 }
                 if (!args.isEmpty()) {
                     config.allow(args.get(0));
-                    sender.sendMessage("World [" + args.get(0) + "] is allowed!");
+                    sender.sendMessage(LangKeys.format("worldAllowed", args.get(0)));
                     return true;
                 }
-                sender.sendMessage("no world name!");
+                sender.sendMessage(LangKeys.format("invalidWorldName"));
                 return false;
             }
         });
@@ -53,20 +55,21 @@ public class CommandZombie extends IICommand {
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (sender instanceof Player) {
                     if (args.isEmpty()) {
-                        config.disallow(((Player) sender).getWorld().getName());
-                        sender.sendMessage("World [" + ((Player) sender).getWorld().getName() + "] is disallowed!");
+                        String worldName = ((Player) sender).getWorld().getName();
+                        config.disallow(worldName);
+                        sender.sendMessage(LangKeys.format("worldDisallowed", worldName));
                     } else {
                         config.disallow(args.get(0));
-                        sender.sendMessage("World [" + args.get(0) + "] is disallowed!");
+                        sender.sendMessage(LangKeys.format("worldDisallowed", args.get(0)));
                     }
                     return true;
                 }
                 if (!args.isEmpty()) {
                     config.disallow(args.get(0));
-                    sender.sendMessage("World [" + args.get(0) + "] is disallowed!");
+                    sender.sendMessage(LangKeys.format("worldDisallowed", args.get(0)));
                     return true;
                 }
-                sender.sendMessage("no world name!");
+                sender.sendMessage(LangKeys.format("invalidWorldName"));
                 return false;
             }
         });
@@ -74,14 +77,14 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (args.isEmpty()) {
-                    sender.sendMessage("Speed effect level is between " + config.minSpeed() + "-" + config.maxSpeed());
+                    sender.sendMessage(LangKeys.format("speedInfo", config.minSpeed(), config.maxSpeed()));
                 } else if (args.get(0).matches("[0-9]+-[0-9]+")) {
                     String[] ss = args.get(0).split("-");
                     config.minSpeed(Integer.valueOf(ss[0]));
                     config.maxSpeed(Integer.valueOf(ss[1]));
-                    sender.sendMessage("Speed effect level is set to " + config.minSpeed() + "-" + config.maxSpeed());
+                    sender.sendMessage(LangKeys.format("speedInfo", config.minSpeed(), config.maxSpeed()));
                 } else {
-                    sender.sendMessage("/zombie speed [min-max]");
+                    sender.sendMessage(LangKeys.format("speedUsage"));
                 }
                 return true;
             }
@@ -90,14 +93,14 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (args.isEmpty()) {
-                    sender.sendMessage("Health is between " + config.minHealth() + "-" + config.maxHealth());
+                    sender.sendMessage(LangKeys.format("healthInfo", config.minHealth(), config.maxHealth()));
                 } else if (args.get(0).matches("[0-9]+-[0-9]+")) {
                     String[] ss = args.get(0).split("-");
                     config.minHealth(Integer.valueOf(ss[0]));
                     config.maxHealth(Integer.valueOf(ss[1]));
-                    sender.sendMessage("Health is set to " + config.minHealth() + "-" + config.maxHealth());
+                    sender.sendMessage(LangKeys.format("healthInfo", config.minHealth(), config.maxHealth()));
                 } else {
-                    sender.sendMessage("/zombie health [min-max]");
+                    sender.sendMessage(LangKeys.format("healthUsage"));
                 }
                 return true;
             }
@@ -106,14 +109,14 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (args.isEmpty()) {
-                    sender.sendMessage("Spawn radius is between " + config.minSpawnRadius() + "-" + config.maxSpawnRadius());
+                    sender.sendMessage(LangKeys.format("radiusInfo", config.minSpawnRadius(), config.maxSpawnRadius()));
                 } else if (args.get(0).matches("[0-9]+-[0-9]+")) {
                     String[] ss = args.get(0).split("-");
                     config.minSpawnRadius(Integer.valueOf(ss[0]));
                     config.maxSpawnRadius(Integer.valueOf(ss[1]));
-                    sender.sendMessage("Spawn radius is set to " + config.minSpawnRadius() + "-" + config.maxSpawnRadius());
+                    sender.sendMessage(LangKeys.format("radiusInfo", config.minSpawnRadius(), config.maxSpawnRadius()));
                 } else {
-                    sender.sendMessage("/zombie radius [min-max]");
+                    sender.sendMessage(LangKeys.format("radiusUsage"));
                 }
                 return true;
             }
@@ -122,12 +125,12 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (args.isEmpty()) {
-                    sender.sendMessage("Refresh time is " + config.refresh() / 20 + " s");
+                    sender.sendMessage(LangKeys.format("refreshTime", config.refresh()));
                 } else if (args.get(0).matches("[0-9]+")) {
                     config.refresh(Integer.valueOf(args.get(0)));
-                    sender.sendMessage("Refresh time is set to " + config.refresh() + " s");
+                    sender.sendMessage(LangKeys.format("refreshTime", config.refresh()));
                 } else {
-                    sender.sendMessage("/zombie refresh [time]");
+                    sender.sendMessage(LangKeys.format("refreshUsage"));
                 }
                 return true;
             }
@@ -136,7 +139,7 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 config.debug(!config.debug());
-                sender.sendMessage("Debug mode is turned " + (config.debug() ? "ON" : "OFF"));
+                sender.sendMessage(LangKeys.format(config.debug() ? "debugON" : "debugOFF"));
                 return true;
             }
         });
@@ -144,12 +147,12 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (args.isEmpty()) {
-                    sender.sendMessage("[Zombies] ScoreBoard display slot is " + config.displaySlot());
+                    sender.sendMessage(LangKeys.format("displaySlot" + config.displaySlot()));
                 } else if (args.get(0).matches("[0-3]")) {
                     config.displaySlot(Integer.valueOf(args.get(0)));
-                    sender.sendMessage("[Zombies] ScoreBoard display slot is set to " + config.displaySlot());
+                    sender.sendMessage(LangKeys.format("displaySlot" + config.displaySlot()));
                 } else {
-                    sender.sendMessage("[Zombies] parameters incorrect");
+                    sender.sendMessage(LangKeys.format("slotUsage"));
                 }
                 return true;
             }
@@ -158,10 +161,10 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 if (args.isEmpty()) {
-                    sender.sendMessage("[Zombies] Lang is " + config.lang());
+                    sender.sendMessage(LangKeys.format("language", config.lang()));
                 } else {
                     config.lang(args.get(0));
-                    sender.sendMessage("[Zombies] Lang is set to " + config.lang());
+                    sender.sendMessage(LangKeys.format("language", config.lang()));
                 }
                 return true;
             }

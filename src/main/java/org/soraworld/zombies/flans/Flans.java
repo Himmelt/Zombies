@@ -1,6 +1,7 @@
 package org.soraworld.zombies.flans;
 
 import org.bukkit.entity.Entity;
+import org.soraworld.zombies.config.LangKeys;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -17,7 +18,6 @@ public class Flans {
     private Method getName;
 
     private Flans() {
-        System.out.println("[Zombies] get flans mod support!");
         try {
             CraftEntity = Class.forName("org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity");
             EntityBullet = Class.forName("com.flansmod.common.guns.EntityBullet");
@@ -32,8 +32,9 @@ public class Flans {
             //net.minecraft.command.ICommandSender#getCommandSenderName
             getName = EntityPlayer.getMethod("func_70005_c_");
             getName.setAccessible(true);
+            System.out.println(LangKeys.format("flansSupport"));
         } catch (Throwable e) {
-            e.printStackTrace();
+            System.out.println(LangKeys.format("flansNotSupport"));
         }
     }
 
@@ -66,7 +67,7 @@ public class Flans {
                 }
             }
         } catch (Throwable e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return "";
     }

@@ -18,13 +18,13 @@ public class LangKeys {
     public LangKeys(File folder) {
         this.folder = folder;
         this.lang = "en_us";
-        this.file = new File(folder, "en_us.yml");
+        this.file = new File(folder, "en_us.txt");
         instance = this;
     }
 
     public void setLang(String lang) {
         this.lang = lang;
-        this.file = new File(folder, lang + ".yml");
+        this.file = new File(folder, lang + ".txt");
         load();
     }
 
@@ -32,25 +32,25 @@ public class LangKeys {
         if (!file.exists()) {
             try {
                 file.getParentFile().mkdirs();
-                InputStream input = this.getClass().getResourceAsStream("/lang/" + lang + ".yml");
+                InputStream input = this.getClass().getResourceAsStream("/lang/" + lang + ".txt");
                 FileUtils.copyInputStreamToFile(input, file);
             } catch (Throwable e) {
-                e.printStackTrace();
+                System.out.println("[Zombies] lang file release exception !!!");
             }
         }
         try {
             config.load(file);
         } catch (Throwable e) {
-            e.printStackTrace();
+            System.out.println("[Zombies] lang file load exception !!!");
         }
     }
 
     public static String format(String key, Object... args) {
         if (instance == null) {
-            return key;
+            return String.format(key, args);
         }
         String value = instance.config.getString(key);
-        if (value == null) return key;
+        if (value == null) return String.format(key, args);
         return String.format(value.replace("&", "\u00a7"), args);
     }
 

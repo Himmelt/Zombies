@@ -1,9 +1,6 @@
 package org.soraworld.zombies.task;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -12,6 +9,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.soraworld.zombies.config.Config;
+import org.soraworld.zombies.config.LangKeys;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,7 +37,7 @@ public class SpawnTask extends BukkitRunnable {
                 spawnZombiesAround(player);
             } else {
                 if (config.debug()) {
-                    System.out.println("[Zombies] " + player.getName() + " restart cool down.");
+                    System.out.println(LangKeys.format("restartCooldown", player.getName()));
                 }
                 cools.put(player.getName(), System.currentTimeMillis());
                 config.clearKills(player.getName());
@@ -79,12 +77,12 @@ public class SpawnTask extends BukkitRunnable {
                 zombie.addPotionEffect(FIRE_RESISTANCE);
                 zombie.setCanPickupItems(false);
                 if (config.debug()) {
-                    System.out.println("[Zombies] Spawning around " + player.getName());
+                    System.out.println(LangKeys.format("spawnAround", player.getName()));
                 }
             }
         } else {
             if (config.debug()) {
-                System.out.println("[Zombies] zombies' amount around " + player.getName() + " is up to limit.");
+                System.out.println(LangKeys.format("uptoLimit", player.getName()));
             }
         }
     }
@@ -104,7 +102,7 @@ public class SpawnTask extends BukkitRunnable {
         Block block;
         for (int i = 0; i <= radius && y + i < 255 && y - i > 1; i++) {
             block = world.getBlockAt(x, y + i, z);
-            if (block.getType().isSolid()) {
+            if (block.getType().isSolid() || block.getType() == Material.WATER) {
                 block = world.getBlockAt(x, y + i + 1, z);
                 if (block.getType().isTransparent()) {
                     block = world.getBlockAt(x, y + i + 2, z);
@@ -116,7 +114,7 @@ public class SpawnTask extends BukkitRunnable {
                 block = world.getBlockAt(x, y - i - 1, z);
                 if (block.getType().isTransparent()) {
                     block = world.getBlockAt(x, y - i - 2, z);
-                    if (block.getType().isSolid()) return y - i - 1;
+                    if (block.getType().isSolid() || block.getType() == Material.WATER) return y - i - 1;
                 }
             }
         }

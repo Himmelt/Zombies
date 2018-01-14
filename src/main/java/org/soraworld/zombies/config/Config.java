@@ -1,12 +1,10 @@
 package org.soraworld.zombies.config;
 
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -93,8 +91,8 @@ public class Config {
             allowWorlds.clear();
             allowWorlds.addAll(config.getStringList("allowWorlds"));
 
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            System.out.println("[Zombies] Config load Exception !!!");
         }
         langKeys.setLang(lang);
         langKeys.load();
@@ -119,8 +117,8 @@ public class Config {
             config.set("debug", debug);
             config.set("allowWorlds", new ArrayList<>(allowWorlds));
             config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            System.out.println("[Zombies] Config save Exception !!!");
         }
     }
 
@@ -166,7 +164,7 @@ public class Config {
 
     public long refresh() {
         if (refresh < 1) refresh = 1;
-        return refresh * 20;
+        return refresh;
     }
 
     public void refresh(int refresh) {
@@ -244,7 +242,7 @@ public class Config {
         if (kill == null) kill = 0;
         kills.put(name, kill + 1);
         killsBoard.update(name, kill + 1);
-        if (debug) System.out.println("[Zombies] " + name + " has killed " + (kill + 1) + " zombies.");
+        if (debug) System.out.println(LangKeys.format("debugKillCount", name, kill + 1));
     }
 
     public void displaySlot(int slot) {
@@ -259,7 +257,7 @@ public class Config {
             kills.put(name, kill);
         }
         if (debug && kill >= killCoolLimit) {
-            System.out.println("[Zombies] " + name + "'s kills " + kill + " is > cool_limit " + killCoolLimit + "");
+            System.out.println(LangKeys.format("debugKillCool", name, kill, killCoolLimit));
         }
         return kill >= killCoolLimit;
     }

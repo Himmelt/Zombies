@@ -47,7 +47,7 @@ public class EventListener implements Listener {
                     String shooter = Flans.getInstance().getShooter(event.getDamager());
                     config.addKill(shooter);
                 } catch (Throwable e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         }

@@ -1,0 +1,19 @@
+#中文语言文件在windows系统下请使用GB2312编码
+#Chinese language file please use GB2312 encode
+scoreboardDisplay: "&c&l击杀僵尸数"
+configSaved
+configReloaded
+worldAllowed
+worldDisallowed
+invalidWorldName
+speedInfo
+speedUsage
+healthInfo
+healthUsage
+radiusInfo
+radiusUsage
+refreshTime
+refreshUsage
+displaySlot
+slotUsage
+language
