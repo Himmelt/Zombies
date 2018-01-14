@@ -96,6 +96,7 @@ public class Config {
         }
         langKeys.setLang(lang);
         langKeys.load();
+        if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
         killsBoard.setDisplaySlot(displaySlot);
         killsBoard.setDisplayName(LangKeys.format("scoreboardDisplay"));
     }
@@ -247,6 +248,7 @@ public class Config {
 
     public void displaySlot(int slot) {
         displaySlot = slot;
+        if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
         killsBoard.setDisplaySlot(slot);
     }
 

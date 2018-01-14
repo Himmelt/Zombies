@@ -1,19 +1,33 @@
-#中文语言文件在windows系统下请使用GB2312编码
-#Chinese language file please use GB2312 encode
+# 中文语言文件(Chinese Language File)
+# 在windows系统下请使用GB2312编码(Please use GB2312 encode in Windows OS)
+
+language: "[Zombies] 当前语言为: %s ."
+configSaved: "[Zombies] 配置文件以保存."
+configReloaded: "[Zombies] 配置文件已重载."
+worldAllowed: "[Zombies] 已允许世界 &2%s&r 生成僵尸."
+worldDisallowed: "[Zombies] 已禁止世界 &2%s&r 生成僵尸."
+invalidWorldName: "[Zombies] 缺少参数或参数不是有效世界名."
+speedInfo: "[Zombies] 当前僵尸迅捷效果等级范围为: %d - %d ."
+speedUsage: "[Zombies] /zombie speed [min-max]"
+healthInfo: "[Zombies] 当前僵尸血量范围为: %d - %d ."
+healthUsage: "[Zombies] /zombie health [min-max]"
+radiusInfo: "[Zombies] 当前僵尸生成位置距离玩家半径范围为: %d - %d ."
+radiusUsage: "[Zombies] /zombie radius [min-max]"
+refreshTime: "[Zombies] 当前僵尸生成刷新时间为: %d ticks."
+refreshUsage: "[Zombies] /zombie refresh [tick]"
+debugON: "[Zombies] 调试模式已开启!"
+debugOFF: "[Zombies] 调试模式已关闭!"
+displaySlot0: "[Zombies] 当前不显示计分板."
+displaySlot1: "[Zombies] 当前计分板显示位置为 玩家头顶."
+displaySlot2: "[Zombies] 当前计分板显示位置为 玩家列表."
+displaySlot3: "[Zombies] 当前计分板显示位置为 屏幕右侧."
+slotUsage: "[Zombies] /zombie slot [0|1|2|3]"
 scoreboardDisplay: "&c&l击杀僵尸数"
-configSaved
-configReloaded
-worldAllowed
-worldDisallowed
-invalidWorldName
-speedInfo
-speedUsage
-healthInfo
-healthUsage
-radiusInfo
-radiusUsage
-refreshTime
-refreshUsage
-displaySlot
-slotUsage
-language
+debugKillCount: "[Zombies][调试] 玩家 %s 已击杀 %d 只僵尸."
+debugKillCool: "[Zombies][调试] 玩家 %s 已击杀 %d 只僵尸,已到达冷却限制 %d ."
+debugRestartCooldown: "[Zombies][调试] 玩家 %s 已重新进入冷却计时."
+debugSpawnAround: "[Zombies][调试] 已在玩家 %s 周围生成一只僵尸."
+debugAroundUptoLimit: "[Zombies][调试] 玩家 %s 周围僵尸数量已达上限."
+
+flansSupport: "[Zombies] 成功支持枪械MOD(Flans)."
+flansNotSupport: "[Zombies] 无法支持枪械MOD(Flans)."

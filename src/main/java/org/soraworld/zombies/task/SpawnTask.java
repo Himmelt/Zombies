@@ -37,7 +37,7 @@ public class SpawnTask extends BukkitRunnable {
                 spawnZombiesAround(player);
             } else {
                 if (config.debug()) {
-                    System.out.println(LangKeys.format("restartCooldown", player.getName()));
+                    System.out.println(LangKeys.format("debugRestartCooldown", player.getName()));
                 }
                 cools.put(player.getName(), System.currentTimeMillis());
                 config.clearKills(player.getName());
@@ -77,12 +77,12 @@ public class SpawnTask extends BukkitRunnable {
                 zombie.addPotionEffect(FIRE_RESISTANCE);
                 zombie.setCanPickupItems(false);
                 if (config.debug()) {
-                    System.out.println(LangKeys.format("spawnAround", player.getName()));
+                    System.out.println(LangKeys.format("debugSpawnAround", player.getName()));
                 }
             }
         } else {
             if (config.debug()) {
-                System.out.println(LangKeys.format("uptoLimit", player.getName()));
+                System.out.println(LangKeys.format("debugAroundUptoLimit", player.getName()));
             }
         }
     }
