@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,6 +22,8 @@ public class SpawnTask extends BukkitRunnable {
     private final Config config;
     private HashMap<String, Long> cools = new HashMap<>();
     private final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 6000, 1);
+
+    private static SpawnTask task;
 
     public SpawnTask(Config config) {
         this.config = config;
@@ -100,9 +103,9 @@ public class SpawnTask extends BukkitRunnable {
 
     private int getY(World world, int x, int y, int z, double radius) {
         Block block;
-        for (int i = 0; i <= radius && y + i < 255 && y - i > 1; i++) {
+        for (int i = -1; i <= radius && y + i < 255 && y - i > 1; i++) {
             block = world.getBlockAt(x, y + i, z);
-            if (block.getType().isSolid() || block.getType() == Material.WATER) {
+            if (block.getType().isSolid() || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER) {
                 block = world.getBlockAt(x, y + i + 1, z);
                 if (block.getType().isTransparent()) {
                     block = world.getBlockAt(x, y + i + 2, z);
@@ -114,11 +117,19 @@ public class SpawnTask extends BukkitRunnable {
                 block = world.getBlockAt(x, y - i - 1, z);
                 if (block.getType().isTransparent()) {
                     block = world.getBlockAt(x, y - i - 2, z);
-                    if (block.getType().isSolid() || block.getType() == Material.WATER) return y - i - 1;
+                    if (block.getType().isSolid() || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+                        return y - i - 1;
                 }
             }
         }
         return -1;
     }
 
+    public static void runNewTask(Plugin plugin, Config config) {
+        if (task != null) {
+            task.cancel();
+        }
+        task = new SpawnTask(config);
+        task.runTaskTimer(plugin, config.refresh(), config.refresh());
+    }
 }

@@ -2,14 +2,16 @@ package org.soraworld.zombies.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.soraworld.zombies.config.Config;
 import org.soraworld.zombies.config.LangKeys;
+import org.soraworld.zombies.task.SpawnTask;
 
 import java.util.ArrayList;
 
 public class CommandZombie extends IICommand {
 
-    public CommandZombie(String name, final Config config) {
+    public CommandZombie(String name, final Plugin plugin, final Config config) {
         super(name);
         addSub(new IICommand("save") {
             @Override
@@ -23,6 +25,7 @@ public class CommandZombie extends IICommand {
             @Override
             public boolean execute(CommandSender sender, ArrayList<String> args) {
                 config.load();
+                SpawnTask.runNewTask(plugin, config);
                 sender.sendMessage(LangKeys.format("configReloaded"));
                 return true;
             }
@@ -128,6 +131,7 @@ public class CommandZombie extends IICommand {
                     sender.sendMessage(LangKeys.format("refreshTime", config.refresh()));
                 } else if (args.get(0).matches("[0-9]+")) {
                     config.refresh(Integer.valueOf(args.get(0)));
+                    SpawnTask.runNewTask(plugin, config);
                     sender.sendMessage(LangKeys.format("refreshTime", config.refresh()));
                 } else {
                     sender.sendMessage(LangKeys.format("refreshUsage"));

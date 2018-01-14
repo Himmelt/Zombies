@@ -19,10 +19,9 @@ public class Zombies extends JavaPlugin {
         config = new Config(this.getDataFolder());
         config.load();
         config.save();
-        command = new CommandZombie("zombie", config);
         this.getServer().getPluginManager().registerEvents(new EventListener(config), this);
-        SpawnTask task = new SpawnTask(config);
-        task.runTaskTimer(this, config.refresh(), config.refresh());
+        SpawnTask.runNewTask(this, config);
+        command = new CommandZombie("zombie", this, config);
     }
 
     @Override
