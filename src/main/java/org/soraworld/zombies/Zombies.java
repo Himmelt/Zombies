@@ -7,7 +7,7 @@ import org.soraworld.zombies.command.CommandZombie;
 import org.soraworld.zombies.config.Config;
 import org.soraworld.zombies.listener.EventListener;
 import org.soraworld.zombies.task.SpawnTask;
-import org.soraworld.zombies.util.Lists;
+import org.soraworld.zombies.util.ListUtils;
 
 public class Zombies extends JavaPlugin {
 
@@ -31,6 +31,6 @@ public class Zombies extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        return command.execute(sender, Lists.arrayList(args));
+        return command.execute(sender, ListUtils.arrayList(args));
     }
 }

@@ -3,7 +3,7 @@ package org.soraworld.zombies.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.soraworld.zombies.util.Lists;
+import org.soraworld.zombies.util.ListUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ public abstract class IICommand implements CommandExecutor {
 
     public IICommand(String name, String... aliases) {
         this.name = name;
-        this.aliases = Lists.arrayList(aliases);
+        this.aliases = ListUtils.arrayList(aliases);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String lable, String[] args) {
-        return execute(sender, Lists.arrayList(args));
+        return execute(sender, ListUtils.arrayList(args));
     }
 
     public boolean execute(CommandSender sender, ArrayList<String> args) {

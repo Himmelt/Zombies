@@ -1,7 +1,7 @@
 package org.soraworld.zombies.config;
 
-import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.soraworld.zombies.util.FileUtils;
 
 import java.io.File;
 import java.io.InputStream;

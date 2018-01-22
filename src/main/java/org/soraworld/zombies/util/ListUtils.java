@@ -3,7 +3,7 @@ package org.soraworld.zombies.util;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Lists {
+public class ListUtils {
 
     @SafeVarargs
     public static <T> ArrayList<T> arrayList(T... elements) {
