@@ -1,5 +1,6 @@
 package org.soraworld.zombies.config;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.soraworld.zombies.util.FileUtils;
 
@@ -51,7 +52,7 @@ public class LangKeys {
         }
         String value = instance.config.getString(key);
         if (value == null) return String.format(key, args);
-        return String.format(value.replace("&", "\u00a7"), args);
+        return String.format(value.replace('&', ChatColor.COLOR_CHAR), args);
     }
 
 }
