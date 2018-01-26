@@ -1,5 +1,5 @@
 # 中文语言文件(Chinese Language File)
-# 在windows系统下请使用GB2312编码(Please use GB2312 encode in Windows OS)
+# 在windows系统下请使用GB2312编码(Please use GB2312 encode on Windows OS)
 
 language: "[Zombies] 当前语言为: %s ."
 configSaved: "[Zombies] 配置文件以保存."

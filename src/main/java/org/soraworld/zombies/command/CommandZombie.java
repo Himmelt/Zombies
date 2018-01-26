@@ -175,4 +175,14 @@ public class CommandZombie extends IICommand {
         });
     }
 
+    public boolean execute(CommandSender sender, ArrayList<String> args) {
+        if (args.size() >= 1) {
+            IICommand sub = subs.get(args.remove(0));
+            if (sub != null) {
+                return sub.execute(sender, args);
+            }
+        }
+        return false;
+    }
+
 }

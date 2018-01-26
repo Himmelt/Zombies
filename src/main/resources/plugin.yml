@@ -1,6 +1,6 @@
 name: Zombies
 main: org.soraworld.zombies.Zombies
-version: 0.0.1
+version: 1.7.10-0.1.3
 commands:
   zombie:
     description: "Zombies - https://github.com/Himmelt/Zombies"

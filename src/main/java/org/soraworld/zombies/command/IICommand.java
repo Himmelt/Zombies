@@ -36,7 +36,7 @@ public abstract class IICommand implements CommandExecutor {
         return false;
     }
 
-    private String getUsage() {
+    public String getUsage() {
         return "";
     }
 

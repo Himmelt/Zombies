@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.soraworld.zombies.command.CommandZombie;
+import org.soraworld.zombies.command.IICommand;
 import org.soraworld.zombies.config.Config;
 import org.soraworld.zombies.listener.EventListener;
 import org.soraworld.zombies.task.SpawnTask;
@@ -12,7 +13,7 @@ import org.soraworld.zombies.util.ListUtils;
 public class Zombies extends JavaPlugin {
 
     private Config config;
-    private CommandZombie command;
+    private IICommand command;
 
     @Override
     public void onEnable() {
