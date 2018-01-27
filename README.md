@@ -12,8 +12,8 @@ speed: 0-2
 health: 1-3
 #僵尸随机生成位置距离玩家的半径范围
 spawnRadius: 15-45
-#僵尸生成(刷新)时间(秒)
-refresh: 1
+#僵尸生成(刷新)时间(tick,1秒 == 20 tick)
+refresh: 50
 #玩家周围僵尸数量上限
 spawnLimit: 10
 #在冷却时间内的击杀上限，
