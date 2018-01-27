@@ -12,14 +12,14 @@ speed: 0-2
 health: 1-3
 #僵尸随机生成位置距离玩家的半径范围
 spawnRadius: 15-45
-#僵尸生成(刷新)时间(秒)
-refresh: 1
+#僵尸生成(刷新)时间(tick,1秒 == 20 tick)
+refresh: 50
 #玩家周围僵尸数量上限
 spawnLimit: 10
 #在冷却时间内的击杀上限，
 #击杀数到达该值后，周围不再继续生成僵尸，超过冷却时间后继续生成。
 killCoolLimit: 20
-#击杀数量刷新时间(冷却时间)(tick)
+#击杀数量刷新时间(冷却时间)(秒)
 killCoolTime: 300
 #生成小僵尸的概率
 babyChance: 0.3
