@@ -19,7 +19,7 @@ public class Config {
     private int maxHealth = 20;
     private int minSpawnRadius = 15;
     private int maxSpawnRadius = 25;
-    private int refresh = 5;
+    private int refresh = 50;
     private int spawnLimit = 30;
     private int killCoolLimit = 80;
     private int killCoolTime = 300;
