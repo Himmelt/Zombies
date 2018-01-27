@@ -2,6 +2,7 @@ package org.soraworld.zombies.flans;
 
 import org.bukkit.entity.Entity;
 import org.soraworld.zombies.config.LangKeys;
+import org.soraworld.zombies.util.ServerUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -32,9 +33,9 @@ public class Flans {
             //net.minecraft.command.ICommandSender#getCommandSenderName
             getName = EntityPlayer.getMethod("func_70005_c_");
             getName.setAccessible(true);
-            System.out.println(LangKeys.format("flansSupport"));
+            ServerUtils.console(LangKeys.format("flansSupport"));
         } catch (Throwable e) {
-            System.out.println(LangKeys.format("flansNotSupport"));
+            ServerUtils.console(LangKeys.format("flansNotSupport"));
         }
     }
 

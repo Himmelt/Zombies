@@ -11,6 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.soraworld.zombies.config.Config;
 import org.soraworld.zombies.config.LangKeys;
+import org.soraworld.zombies.util.ServerUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,9 +40,7 @@ public class SpawnTask extends BukkitRunnable {
             if (System.currentTimeMillis() - last < config.killCoolTime() * 1000) {
                 spawnZombiesAround(player);
             } else {
-                if (config.debug()) {
-                    System.out.println(LangKeys.format("debugRestartCooldown", player.getName()));
-                }
+                ServerUtils.debug(config.debug(), LangKeys.format("debugRestartCooldown", player.getName()));
                 cools.put(player.getName(), System.currentTimeMillis());
                 config.clearKills(player.getName());
             }
@@ -79,14 +78,10 @@ public class SpawnTask extends BukkitRunnable {
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, config.randSpeed()), false);
                 zombie.addPotionEffect(FIRE_RESISTANCE);
                 zombie.setCanPickupItems(false);
-                if (config.debug()) {
-                    System.out.println(LangKeys.format("debugSpawnAround", player.getName()));
-                }
+                ServerUtils.debug(config.debug(), LangKeys.format("debugSpawnAround", player.getName()));
             }
         } else {
-            if (config.debug()) {
-                System.out.println(LangKeys.format("debugAroundUptoLimit", player.getName()));
-            }
+            ServerUtils.debug(config.debug(), LangKeys.format("debugAroundUptoLimit", player.getName()));
         }
     }
 

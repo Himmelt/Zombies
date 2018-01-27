@@ -3,6 +3,7 @@ package org.soraworld.zombies.config;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.soraworld.zombies.util.FileUtils;
+import org.soraworld.zombies.util.ServerUtils;
 
 import java.io.File;
 import java.io.InputStream;
@@ -19,13 +20,13 @@ public class LangKeys {
     public LangKeys(File folder) {
         this.folder = folder;
         this.lang = "en_us";
-        this.file = new File(folder, "en_us.txt");
+        this.file = new File(folder, "en_us.yml");
         instance = this;
     }
 
     public void setLang(String lang) {
         this.lang = lang;
-        this.file = new File(folder, lang + ".txt");
+        this.file = new File(folder, lang + ".yml");
         load();
     }
 
@@ -33,16 +34,16 @@ public class LangKeys {
         if (!file.exists()) {
             try {
                 file.getParentFile().mkdirs();
-                InputStream input = this.getClass().getResourceAsStream("/lang/" + lang + ".txt");
+                InputStream input = this.getClass().getResourceAsStream("/lang/" + lang + ".yml");
                 FileUtils.copyInputStreamToFile(input, file);
             } catch (Throwable e) {
-                System.out.println("[Zombies] lang file release exception !!!");
+                ServerUtils.console("lang file release exception !!!");
             }
         }
         try {
             config.load(file);
         } catch (Throwable e) {
-            System.out.println("[Zombies] lang file load exception !!!");
+            ServerUtils.console("lang file load exception !!!");
         }
     }
 

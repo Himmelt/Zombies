@@ -8,6 +8,7 @@ public class ServerUtils {
 
     private static final String PLAIN_HEAD = "[Zombies] ";
     private static final String COLOR_HEAD = ChatColor.GREEN + PLAIN_HEAD + ChatColor.RESET;
+    private static final String DEBUG_HEAD = ChatColor.GREEN + PLAIN_HEAD + ChatColor.RED + "[Debug] " + ChatColor.RESET;
 
     public static void broadcast(String message) {
         Bukkit.broadcastMessage(COLOR_HEAD + message);
@@ -23,5 +24,11 @@ public class ServerUtils {
 
     public static void send(CommandSender sender, String message) {
         sender.sendMessage(COLOR_HEAD + message);
+    }
+
+    public static void debug(boolean debug, String message) {
+        if (debug) {
+            Bukkit.getConsoleSender().sendMessage(DEBUG_HEAD + message);
+        }
     }
 }

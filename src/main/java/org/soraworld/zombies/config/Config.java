@@ -3,6 +3,7 @@ package org.soraworld.zombies.config;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
+import org.soraworld.zombies.util.ServerUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class Config {
             allowWorlds.addAll(config.getStringList("allowWorlds"));
 
         } catch (Throwable e) {
-            System.out.println("[Zombies] Config load Exception !!!");
+            ServerUtils.console("config file load exception !!!");
         }
         langKeys.setLang(lang);
         langKeys.load();
@@ -119,7 +120,7 @@ public class Config {
             config.set("allowWorlds", new ArrayList<>(allowWorlds));
             config.save(file);
         } catch (Throwable e) {
-            System.out.println("[Zombies] Config save Exception !!!");
+            ServerUtils.console("config file save exception !!!");
         }
     }
 
@@ -243,7 +244,7 @@ public class Config {
         if (kill == null) kill = 0;
         kills.put(name, kill + 1);
         killsBoard.update(name, kill + 1);
-        if (debug) System.out.println(LangKeys.format("debugKillCount", name, kill + 1));
+        ServerUtils.debug(debug, LangKeys.format("debugKillCount", name, kill + 1));
     }
 
     public void displaySlot(int slot) {
@@ -258,8 +259,8 @@ public class Config {
             kill = 0;
             kills.put(name, kill);
         }
-        if (debug && kill >= killCoolLimit) {
-            System.out.println(LangKeys.format("debugKillCool", name, kill, killCoolLimit));
+        if (kill >= killCoolLimit) {
+            ServerUtils.debug(debug, LangKeys.format("debugKillCool", name, kill, killCoolLimit));
         }
         return kill >= killCoolLimit;
     }
