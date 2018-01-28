@@ -96,7 +96,6 @@ public class Config {
             ServerUtils.console("config file load exception !!!");
         }
         langKeys.setLang(lang);
-        langKeys.load();
         if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
         killsBoard.setDisplaySlot(displaySlot);
         killsBoard.setDisplayName(LangKeys.format("scoreboardDisplay"));
@@ -281,7 +280,6 @@ public class Config {
         if (lang != null && !lang.isEmpty()) {
             this.lang = lang;
             langKeys.setLang(lang);
-            langKeys.load();
             killsBoard.setDisplayName(LangKeys.format("scoreboardDisplay"));
         }
     }
