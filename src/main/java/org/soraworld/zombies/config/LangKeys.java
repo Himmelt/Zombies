@@ -30,7 +30,7 @@ public class LangKeys {
         load();
     }
 
-    public void load() {
+    private void load() {
         if (!file.exists()) {
             try {
                 file.getParentFile().mkdirs();
