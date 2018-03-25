@@ -1,9 +1,9 @@
 name: Zombies
 main: org.soraworld.zombies.Zombies
-version: 1.7.10-0.1.4
+version: 1.7.10-1.0.5
 commands:
   zombie:
     description: "Zombies - https://github.com/Himmelt/Zombies"
     usage: "[Zombies] /zombie save|reload|allow|disallow|speed|health|radius|refresh|debug"
-    permission: zombie
-    permission-message: "[Zombies] You have no permission <zombie>"
+    permission: zombie.admin
+    permission-message: "[Zombies] You have no permission <zombie.admin>"

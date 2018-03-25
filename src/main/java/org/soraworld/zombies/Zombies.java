@@ -10,6 +10,8 @@ import org.soraworld.zombies.listener.EventListener;
 import org.soraworld.zombies.task.SpawnTask;
 import org.soraworld.zombies.util.ListUtils;
 
+import java.util.List;
+
 public class Zombies extends JavaPlugin {
 
     private Config config;
@@ -34,4 +36,10 @@ public class Zombies extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return command.execute(sender, ListUtils.arrayList(args));
     }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+        return command.onTabComplete(sender, cmd, alias, args);
+    }
+
 }

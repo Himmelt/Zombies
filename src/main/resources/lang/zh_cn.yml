@@ -1,6 +1,8 @@
 # 中文语言文件(Chinese Language File)
 # 在中文windows系统下请使用GB2312编码(Please use GB2312 encoding on zh_CN Windows OS)
 
+chatHead: "[僵尸来袭] "
+
 language: "当前语言为: %s ."
 configSaved: "配置文件已保存."
 configReloaded: "配置文件已重载."

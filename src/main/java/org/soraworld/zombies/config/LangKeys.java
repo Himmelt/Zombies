@@ -17,7 +17,7 @@ public class LangKeys {
 
     private static LangKeys instance;
 
-    public LangKeys(File folder) {
+    LangKeys(File folder) {
         this.folder = folder;
         this.lang = "en_us";
         this.file = new File(folder, "en_us.yml");
@@ -28,16 +28,18 @@ public class LangKeys {
         this.lang = lang;
         this.file = new File(folder, lang + ".yml");
         load();
+        ServerUtils.setHead(LangKeys.format("chatHead"));
     }
 
     private void load() {
         if (!file.exists()) {
             try {
-                file.getParentFile().mkdirs();
+                folder.mkdirs();
                 InputStream input = this.getClass().getResourceAsStream("/lang/" + lang + ".yml");
                 FileUtils.copyInputStreamToFile(input, file);
             } catch (Throwable e) {
-                ServerUtils.console("lang file release exception !!!");
+                e.printStackTrace();
+                ServerUtils.console("lang file load exception !!!");
             }
         }
         try {

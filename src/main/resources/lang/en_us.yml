@@ -1,6 +1,8 @@
 # English Language File
 # Please use UTF-8 encoding
 
+chatHead: "[Zombies] "
+
 language: "current language is: %s ."
 configSaved: "config file saved."
 configReloaded: "config file reloaded."

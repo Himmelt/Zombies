@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 group 'org.soraworld.zombies'
-version '1.7.10-0.1.4'
+version '1.7.10-1.0.5'
 description = 'Zombies Plugin'
 archivesBaseName = "Zombies-Flans"
 

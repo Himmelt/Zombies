@@ -1,7 +1,6 @@
 package org.soraworld.zombies.config;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
 import org.soraworld.zombies.util.ServerUtils;
 
@@ -44,6 +43,10 @@ public class Config {
 
     public void load() {
         if (!file.exists()) {
+            if (lang == null || lang.isEmpty()) {
+                lang = "en_us";
+            }
+            langKeys.setLang(lang);
             save();
             return;
         }
@@ -53,6 +56,7 @@ public class Config {
             if (lang == null || lang.isEmpty()) {
                 lang = "en_us";
             }
+            langKeys.setLang(lang);
             // speed
             String speed = config.getString("speed");
             if (speed != null && speed.matches("[0-9]+-[0-9]+")) {
@@ -95,7 +99,6 @@ public class Config {
         } catch (Throwable e) {
             ServerUtils.console("config file load exception !!!");
         }
-        langKeys.setLang(lang);
         if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
         killsBoard.setDisplaySlot(displaySlot);
         killsBoard.setDisplayName(LangKeys.format("scoreboardDisplay"));
@@ -133,10 +136,6 @@ public class Config {
 
     public boolean debug() {
         return debug;
-    }
-
-    public ArrayList<ItemStack> drops() {
-        return null;
     }
 
     public int randSpeed() {
@@ -254,10 +253,6 @@ public class Config {
 
     public boolean killCool(String name) {
         Integer kill = kills.get(name);
-        if (kill == null) {
-            kill = 0;
-            kills.put(name, kill);
-        }
         if (kill >= killCoolLimit) {
             ServerUtils.debug(debug, LangKeys.format("debugKillCool", name, kill, killCoolLimit));
         }
