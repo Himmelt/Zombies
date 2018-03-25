@@ -7,3 +7,6 @@ commands:
     usage: "[Zombies] /zombie save|reload|allow|disallow|speed|health|radius|refresh|debug"
     permission: zombie.admin
     permission-message: "[Zombies] You have no permission <zombie.admin>"
+permissions:
+  zombie.admin:
+    default: op
