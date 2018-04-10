@@ -1,12 +1,18 @@
 name: Zombies
+version: 1.7.10-1.1.0
+author: Himmelt
 main: org.soraworld.zombies.Zombies
-version: 1.7.10-1.0.5
+depend: [Violet]
+softdepend: []
+website: https://github.com/Himmelt/Zombies
+description: Zombies Plugin.
+
 commands:
   zombie:
     description: "Zombies - https://github.com/Himmelt/Zombies"
-    usage: "[Zombies] /zombie save|reload|allow|disallow|speed|health|radius|refresh|debug"
+    usage: "/zombie allow|disallow|speed|health|radius|refresh"
     permission: zombie.admin
-    permission-message: "[Zombies] You have no permission <zombie.admin>"
+    permission-message: "You have no permission <zombie.admin>"
 permissions:
   zombie.admin:
     default: op

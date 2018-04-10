@@ -1,11 +1,7 @@
 # English Language File
-# Please use UTF-8 encoding
+# Please keep UTF-8 encoding
 
 chatHead: "[Zombies] "
-
-language: "current language is: %s ."
-configSaved: "config file saved."
-configReloaded: "config file reloaded."
 
 worldAllowed: "Allow world &2%s&r spawn zombies."
 worldDisallowed: "Disallow world &2%s&r spawn zombies."
@@ -18,8 +14,6 @@ radiusInfo: "Current zombies' spawn-radius around players is: %d - %d ."
 radiusUsage: "/zombie radius [min-max]"
 refreshTime: "Current zombies' spawn refresh time is: %d ticks."
 refreshUsage: "/zombie refresh [tick]"
-debugON: "Debug mode is ON!"
-debugOFF: "Debug mode is OFF!"
 displaySlot0: "Current scoreboard is displayed nowhere."
 displaySlot1: "Current scoreboard is displayed over players' head."
 displaySlot2: "Current scoreboard is displayed in player-list."
