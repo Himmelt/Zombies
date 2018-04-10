@@ -19,5 +19,11 @@ repositories {
 
 dependencies {
     compile 'org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT'
+    compile files('lib/spigot-1.7.10.jar')
     compile files('lib/Violet-1.7.10-1.1.6.jar')
+}
+
+jar {
+    includeEmptyDirs = false
+    exclude 'com/flansmod/common/guns'
 }

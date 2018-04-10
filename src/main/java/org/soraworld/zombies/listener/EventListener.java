@@ -44,10 +44,10 @@ public class EventListener implements Listener {
                 }
             } else {
                 try {
-                    String shooter = Flans.getInstance().getShooter(event.getDamager());
-                    config.addKill(shooter);
+                    Player shooter = Flans.getShooter(event.getDamager());
+                    if (shooter != null) config.addKill(shooter.getName());
                 } catch (Throwable e) {
-                    //e.printStackTrace();
+                    if (config.debug()) e.printStackTrace();
                 }
             }
         }

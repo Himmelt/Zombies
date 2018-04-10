@@ -1,15 +1,19 @@
 package org.soraworld.zombies.config;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.soraworld.violet.config.IIConfig;
+import org.soraworld.zombies.flans.Flans;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
 import org.soraworld.zombies.util.ServerUtils;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Config {
+public class Config extends IIConfig {
 
     private String lang = "en_us";
     private int minSpeed = 0;
@@ -132,6 +136,32 @@ public class Config {
 
     public void debug(boolean debug) {
         this.debug = debug;
+    }
+
+    protected void loadOptions() {
+
+    }
+
+    protected void saveOptions() {
+
+    }
+
+    public void afterLoad() {
+        Flans.checkFlans(this);
+    }
+
+    @Nonnull
+    protected ChatColor defaultChatColor() {
+        return ChatColor.RED;
+    }
+
+    @Nonnull
+    protected String defaultChatHead() {
+        return null;
+    }
+
+    public String defaultAdminPerm() {
+        return null;
     }
 
     public boolean debug() {

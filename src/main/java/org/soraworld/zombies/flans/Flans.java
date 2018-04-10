@@ -1,76 +1,41 @@
 package org.soraworld.zombies.flans;
 
+import com.flansmod.common.guns.EntityBullet;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 import org.bukkit.entity.Entity;
-import org.soraworld.zombies.config.LangKeys;
-import org.soraworld.zombies.util.ServerUtils;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import org.bukkit.entity.Player;
+import org.soraworld.zombies.config.Config;
 
 public class Flans {
 
-    private Class CraftEntity;
-    private Class EntityBullet;
-    private Class EntityGrenade;
-    private Class EntityPlayer;
-    private Field fieldEntity;
-    private Field owner;
-    private Field thrower;
-    private Method getName;
+    private static boolean support = false;
 
-    private Flans() {
+    public static void checkFlans(final Config config) {
         try {
-            CraftEntity = Class.forName("org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity");
-            EntityBullet = Class.forName("com.flansmod.common.guns.EntityBullet");
-            EntityGrenade = Class.forName("com.flansmod.common.guns.EntityGrenade");
-            EntityPlayer = Class.forName("net.minecraft.entity.player.EntityPlayer");
-            fieldEntity = CraftEntity.getDeclaredField("entity");
-            fieldEntity.setAccessible(true);
-            owner = EntityBullet.getDeclaredField("owner");
-            owner.setAccessible(true);
-            thrower = EntityGrenade.getDeclaredField("thrower");
-            thrower.setAccessible(true);
-            //net.minecraft.command.ICommandSender#getCommandSenderName
-            getName = EntityPlayer.getMethod("func_70005_c_");
-            getName.setAccessible(true);
-            ServerUtils.console(LangKeys.format("flansSupport"));
-        } catch (Throwable e) {
-            ServerUtils.console(LangKeys.format("flansNotSupport"));
+            CraftEntity.class.getName();
+            net.minecraft.server.v1_7_R4.Entity.class.getName();
+            EntityBullet.class.getName();
+            support = true;
+            config.console("flanSupport");
+        } catch (Throwable ignored) {
+            config.console("flanNotSupport");
         }
     }
 
-    private static Flans instance;
-
-    public static Flans getInstance() {
-        return instance == null ? instance = new Flans() : instance;
-    }
-
-    public String getShooter(Entity cause) {
-        try {
-            if (fieldEntity != null && cause != null) {
-                Object source = fieldEntity.get(cause);
-                if (source != null) {
-                    if (EntityBullet != null && EntityBullet.isAssignableFrom(source.getClass())) {
-                        if (owner != null) {
-                            Object player = owner.get(source);
-                            if (player != null && EntityPlayer != null && getName != null && EntityPlayer.isAssignableFrom(player.getClass())) {
-                                return (String) getName.invoke(player);
-                            }
-                        }
-                    } else if (EntityGrenade != null && EntityGrenade.isAssignableFrom(source.getClass())) {
-                        if (thrower != null) {
-                            Object player = thrower.get(source);
-                            if (player != null && EntityPlayer != null && getName != null && EntityPlayer.isAssignableFrom(player.getClass())) {
-                                return (String) getName.invoke(player);
-                            }
-                        }
+    public static Player getShooter(Entity craftBullet) {
+        if (support && craftBullet instanceof CraftEntity) {
+            net.minecraft.server.v1_7_R4.Entity entity = ((CraftEntity) craftBullet).getHandle();
+            if (entity instanceof EntityBullet) {
+                EntityBullet bullet = (EntityBullet) entity;
+                if (bullet.owner != null) {
+                    CraftEntity player = bullet.owner.getBukkitEntity();
+                    if (player instanceof Player) {
+                        return (Player) player;
                     }
                 }
             }
-        } catch (Throwable e) {
-            //e.printStackTrace();
         }
-        return "";
+        return null;
     }
 
 }

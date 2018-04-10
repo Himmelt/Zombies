@@ -3,6 +3,7 @@ package org.soraworld.zombies.command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.soraworld.violet.command.IICommand;
 import org.soraworld.zombies.config.Config;
 import org.soraworld.zombies.config.LangKeys;
 import org.soraworld.zombies.task.SpawnTask;
