@@ -84,7 +84,7 @@ public class Config extends IIConfig {
 
         if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
         killsBoard.setDisplaySlot(displaySlot);
-        killsBoard.setDisplayName(iiLang.format("scoreboardDisplay"));
+        killsBoard.setDisplayName(iiLang.format("scoreboardDisplay").replace('&', ChatColor.COLOR_CHAR));
     }
 
     protected void saveOptions() {
