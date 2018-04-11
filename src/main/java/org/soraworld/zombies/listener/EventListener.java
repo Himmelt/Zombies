@@ -1,5 +1,6 @@
 package org.soraworld.zombies.listener;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Zombie;
@@ -29,26 +30,19 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onEntityDamaged(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Zombie) {
-            Zombie zombie = (Zombie) event.getEntity();
-
+        Entity damager = event.getDamager();
+        Entity damagee = event.getEntity();
+        if (damagee instanceof Zombie) {
+            Zombie zombie = (Zombie) damagee;
             if (zombie.getHealth() - event.getDamage() > 0.0D) return;
-
-            if (event.getDamager() instanceof Player) {
-                Player player = (Player) event.getDamager();
-                config.addKill(player.getName());
-            } else if (event.getDamager() instanceof Projectile) {
-                ProjectileSource source = ((Projectile) event.getDamager()).getShooter();
-                if (source instanceof Player) {
-                    config.addKill(((Player) source).getName());
-                }
+            if (damager instanceof Player) {
+                config.addKill(damager.getName());
+            } else if (damager instanceof Projectile) {
+                ProjectileSource source = ((Projectile) damager).getShooter();
+                if (source instanceof Player) config.addKill(((Player) source).getName());
             } else {
-                try {
-                    Player shooter = Flans.getShooter(event.getDamager());
-                    if (shooter != null) config.addKill(shooter.getName());
-                } catch (Throwable e) {
-                    if (config.debug()) e.printStackTrace();
-                }
+                Player shooter = Flans.getShooter(damager);
+                if (shooter != null) config.addKill(shooter.getName());
             }
         }
     }

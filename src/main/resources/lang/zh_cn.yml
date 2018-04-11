@@ -26,5 +26,5 @@ debugRestartCooldown: "玩家 %s 已重新进入冷却计时."
 debugSpawnAround: "已在玩家 %s 周围生成一只僵尸."
 debugAroundUptoLimit: "玩家 %s 周围僵尸数量已达上限."
 
-flansSupport: "成功支持枪械MOD(Flans)."
-flansNotSupport: "无法支持枪械MOD(Flans)."
+flanSupport: "&a已检测到枪械 Flans 必须类，将启用枪械支持."
+flanNotSupport: "&c未检测到枪械 Flans 必须类，将禁用枪械支持."

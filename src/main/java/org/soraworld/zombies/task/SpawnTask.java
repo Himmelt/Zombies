@@ -10,8 +10,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.soraworld.zombies.config.Config;
-import org.soraworld.zombies.config.LangKeys;
-import org.soraworld.zombies.util.ServerUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,15 +18,11 @@ import java.util.Map;
 
 public class SpawnTask extends BukkitRunnable {
 
-    private final Config config;
     private HashMap<String, Long> cools = new HashMap<>();
     private final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 6000, 1);
 
     private static SpawnTask task;
-
-    public SpawnTask(Config config) {
-        this.config = config;
-    }
+    private static Config config;
 
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -40,7 +34,7 @@ public class SpawnTask extends BukkitRunnable {
             if (System.currentTimeMillis() - last < config.killCoolTime() * 1000) {
                 spawnZombiesAround(player);
             } else {
-                ServerUtils.debug(config.debug(), LangKeys.format("debugRestartCooldown", player.getName()));
+                if (config.debug()) config.console("debugRestartCooldown", player.getName());
                 cools.put(player.getName(), System.currentTimeMillis());
                 config.clearKills(player.getName());
             }
@@ -56,10 +50,8 @@ public class SpawnTask extends BukkitRunnable {
     }
 
     private void spawnZombiesAround(final Player player) {
-        if (player.getGameMode() != GameMode.SURVIVAL
-                || !config.isAllow(player.getWorld().getName())
-                || config.killCool(player.getName()))
-            return;
+        if (player.getGameMode() != GameMode.SURVIVAL || !config.isAllow(player.getWorld().getName())) return;
+        if (config.killCool(player.getName())) return;
         int radius = config.maxSpawnRadius();
         List<Entity> entities = player.getNearbyEntities(radius, radius, radius);
         int count = 0;
@@ -78,10 +70,10 @@ public class SpawnTask extends BukkitRunnable {
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, config.randSpeed()), false);
                 zombie.addPotionEffect(FIRE_RESISTANCE);
                 zombie.setCanPickupItems(false);
-                ServerUtils.debug(config.debug(), LangKeys.format("debugSpawnAround", player.getName()));
+                if (config.debug()) config.console("debugSpawnAround", player.getName());
             }
         } else {
-            ServerUtils.debug(config.debug(), LangKeys.format("debugAroundUptoLimit", player.getName()));
+            if (config.debug()) config.console("debugAroundUptoLimit", player.getName());
         }
     }
 
@@ -121,10 +113,10 @@ public class SpawnTask extends BukkitRunnable {
     }
 
     public static void runNewTask(Plugin plugin, Config config) {
-        if (task != null) {
-            task.cancel();
-        }
-        task = new SpawnTask(config);
+        SpawnTask.config = config;
+        if (task != null) task.cancel();
+        task = new SpawnTask();
         task.runTaskTimer(plugin, config.refresh(), config.refresh());
     }
+
 }

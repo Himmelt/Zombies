@@ -1,11 +1,11 @@
 package org.soraworld.zombies.config;
 
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.soraworld.violet.config.IIConfig;
+import org.soraworld.zombies.constant.Constant;
 import org.soraworld.zombies.flans.Flans;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
-import org.soraworld.zombies.util.ServerUtils;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -15,7 +15,6 @@ import java.util.HashSet;
 
 public class Config extends IIConfig {
 
-    private String lang = "en_us";
     private int minSpeed = 0;
     private int maxSpeed = 1;
     private int minHealth = 10;
@@ -31,119 +30,76 @@ public class Config extends IIConfig {
     private int minDropExp = 0;
     private int maxDropExp = 0;
     private int displaySlot = 0;
-    private boolean debug = false;
     private final HashSet<String> allowWorlds = new HashSet<>();
 
-    private final File file;
-    private final LangKeys langKeys;
     private final ScoreBoards killsBoard = new ScoreBoards();
     private final HashMap<String, Integer> kills = new HashMap<>();
-    private final YamlConfiguration config = new YamlConfiguration();
 
-    public Config(File file) {
-        this.file = new File(file, "config.yml");
-        this.langKeys = new LangKeys(new File(file, "lang"));
-    }
-
-    public void load() {
-        if (!file.exists()) {
-            if (lang == null || lang.isEmpty()) {
-                lang = "en_us";
-            }
-            langKeys.setLang(lang);
-            save();
-            return;
-        }
-        try {
-            config.load(file);
-            lang = config.getString("lang");
-            if (lang == null || lang.isEmpty()) {
-                lang = "en_us";
-            }
-            langKeys.setLang(lang);
-            // speed
-            String speed = config.getString("speed");
-            if (speed != null && speed.matches("[0-9]+-[0-9]+")) {
-                String[] ss = speed.split("-");
-                minSpeed = Integer.valueOf(ss[0]);
-                maxSpeed = Integer.valueOf(ss[1]);
-            }
-            // health
-            String health = config.getString("health");
-            if (health != null && health.matches("[0-9]+-[0-9]+")) {
-                String[] ss = health.split("-");
-                minHealth = Integer.valueOf(ss[0]);
-                maxHealth = Integer.valueOf(ss[1]);
-            }
-            // spawnRadius
-            String spawnRadius = config.getString("spawnRadius");
-            if (spawnRadius != null && spawnRadius.matches("[0-9]+-[0-9]+")) {
-                String[] ss = spawnRadius.split("-");
-                minSpawnRadius = Integer.valueOf(ss[0]);
-                maxSpawnRadius = Integer.valueOf(ss[1]);
-            }
-            refresh = config.getInt("refresh");
-            spawnLimit = config.getInt("spawnLimit");
-            killCoolLimit = config.getInt("killCoolLimit");
-            killCoolTime = config.getInt("killCoolTime");
-            babyChance = config.getDouble("babyChance");
-            customDrops = config.getBoolean("customDrops");
-            // dropExp
-            String dropExp = config.getString("dropExp");
-            if (dropExp != null && dropExp.matches("[0-9]+-[0-9]+")) {
-                String[] ss = dropExp.split("-");
-                minDropExp = Integer.valueOf(ss[0]);
-                maxDropExp = Integer.valueOf(ss[1]);
-            }
-            debug = config.getBoolean("debug");
-            displaySlot = config.getInt("displaySlot");
-            allowWorlds.clear();
-            allowWorlds.addAll(config.getStringList("allowWorlds"));
-
-        } catch (Throwable e) {
-            ServerUtils.console("config file load exception !!!");
-        }
-        if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
-        killsBoard.setDisplaySlot(displaySlot);
-        killsBoard.setDisplayName(LangKeys.format("scoreboardDisplay"));
-    }
-
-    public void save() {
-        try {
-            config.set("lang", lang);
-            config.set("speed", minSpeed + "-" + maxSpeed);
-            config.set("health", minHealth + "-" + maxHealth);
-            config.set("spawnRadius", minSpawnRadius + "-" + maxSpawnRadius);
-            config.set("refresh", refresh);
-            config.set("spawnLimit", spawnLimit);
-            config.set("killCoolLimit", killCoolLimit);
-            config.set("killCoolTime", killCoolTime);
-            config.set("babyChance", babyChance);
-            config.set("customDrops", customDrops);
-            config.set("dropExp", minDropExp + "-" + maxDropExp);
-            config.set("displaySlot", displaySlot);
-            config.set("debug", debug);
-            config.set("allowWorlds", new ArrayList<>(allowWorlds));
-            config.save(file);
-        } catch (Throwable e) {
-            ServerUtils.console("config file save exception !!!");
-        }
+    public Config(File path, Plugin plugin) {
+        super(path, plugin);
     }
 
     public boolean customDrops() {
         return customDrops;
     }
 
-    public void debug(boolean debug) {
-        this.debug = debug;
-    }
-
     protected void loadOptions() {
+        allowWorlds.clear();
+        // speed
+        String speed = config_yaml.getString("speed");
+        if (speed != null && speed.matches("[0-9]+-[0-9]+")) {
+            String[] ss = speed.split("-");
+            minSpeed = Integer.valueOf(ss[0]);
+            maxSpeed = Integer.valueOf(ss[1]);
+        }
+        // health
+        String health = config_yaml.getString("health");
+        if (health != null && health.matches("[0-9]+-[0-9]+")) {
+            String[] ss = health.split("-");
+            minHealth = Integer.valueOf(ss[0]);
+            maxHealth = Integer.valueOf(ss[1]);
+        }
+        // spawnRadius
+        String spawnRadius = config_yaml.getString("spawnRadius");
+        if (spawnRadius != null && spawnRadius.matches("[0-9]+-[0-9]+")) {
+            String[] ss = spawnRadius.split("-");
+            minSpawnRadius = Integer.valueOf(ss[0]);
+            maxSpawnRadius = Integer.valueOf(ss[1]);
+        }
+        refresh = config_yaml.getInt("refresh");
+        spawnLimit = config_yaml.getInt("spawnLimit");
+        killCoolLimit = config_yaml.getInt("killCoolLimit");
+        killCoolTime = config_yaml.getInt("killCoolTime");
+        babyChance = config_yaml.getDouble("babyChance");
+        customDrops = config_yaml.getBoolean("customDrops");
+        // dropExp
+        String dropExp = config_yaml.getString("dropExp");
+        if (dropExp != null && dropExp.matches("[0-9]+-[0-9]+")) {
+            String[] ss = dropExp.split("-");
+            minDropExp = Integer.valueOf(ss[0]);
+            maxDropExp = Integer.valueOf(ss[1]);
+        }
+        displaySlot = config_yaml.getInt("displaySlot");
+        allowWorlds.addAll(config_yaml.getStringList("allowWorlds"));
 
+        if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
+        killsBoard.setDisplaySlot(displaySlot);
+        killsBoard.setDisplayName(iiLang.format("scoreboardDisplay"));
     }
 
     protected void saveOptions() {
-
+        config_yaml.set("speed", minSpeed + "-" + maxSpeed);
+        config_yaml.set("health", minHealth + "-" + maxHealth);
+        config_yaml.set("spawnRadius", minSpawnRadius + "-" + maxSpawnRadius);
+        config_yaml.set("refresh", refresh);
+        config_yaml.set("spawnLimit", spawnLimit);
+        config_yaml.set("killCoolLimit", killCoolLimit);
+        config_yaml.set("killCoolTime", killCoolTime);
+        config_yaml.set("babyChance", babyChance);
+        config_yaml.set("customDrops", customDrops);
+        config_yaml.set("dropExp", minDropExp + "-" + maxDropExp);
+        config_yaml.set("displaySlot", displaySlot);
+        config_yaml.set("allowWorlds", new ArrayList<>(allowWorlds));
     }
 
     public void afterLoad() {
@@ -157,19 +113,15 @@ public class Config extends IIConfig {
 
     @Nonnull
     protected String defaultChatHead() {
-        return null;
+        return "[" + Constant.PLUGIN_NAME + "] ";
     }
 
     public String defaultAdminPerm() {
-        return null;
-    }
-
-    public boolean debug() {
-        return debug;
+        return Constant.PERM_ADMIN;
     }
 
     public int randSpeed() {
-        return 0;
+        return (int) (minSpeed + Math.abs(maxSpeed - minSpeed) * Math.random());
     }
 
     public double randHealth() {
@@ -178,10 +130,12 @@ public class Config extends IIConfig {
 
     public void allow(String world) {
         allowWorlds.add(world);
+        save();
     }
 
     public void disallow(String world) {
         allowWorlds.remove(world);
+        save();
     }
 
     public boolean isAllow(String world) {
@@ -197,43 +151,6 @@ public class Config extends IIConfig {
         return refresh;
     }
 
-    public void refresh(int refresh) {
-        if (refresh < 1) refresh = 1;
-        this.refresh = refresh;
-    }
-
-    public int maxSpeed() {
-        return maxSpeed;
-    }
-
-    public int minSpeed() {
-        return minSpeed;
-    }
-
-    public void maxSpeed(int speed) {
-        this.maxSpeed = speed;
-    }
-
-    public void minSpeed(int speed) {
-        this.minSpeed = speed;
-    }
-
-    public int maxHealth() {
-        return maxHealth;
-    }
-
-    public int minHealth() {
-        return minHealth;
-    }
-
-    public void maxHealth(int health) {
-        this.maxHealth = health;
-    }
-
-    public void minHealth(int health) {
-        this.minHealth = health;
-    }
-
     public double randSpawnRadius() {
         return minSpawnRadius + Math.abs(maxSpawnRadius - minSpawnRadius) * Math.random();
     }
@@ -244,18 +161,6 @@ public class Config extends IIConfig {
 
     public int maxSpawnRadius() {
         return maxSpawnRadius;
-    }
-
-    public int minSpawnRadius() {
-        return minSpawnRadius;
-    }
-
-    public void maxSpawnRadius(int radius) {
-        this.maxSpawnRadius = radius;
-    }
-
-    public void minSpawnRadius(int radius) {
-        this.minSpawnRadius = radius;
     }
 
     public int killCoolTime() {
@@ -272,7 +177,7 @@ public class Config extends IIConfig {
         if (kill == null) kill = 0;
         kills.put(name, kill + 1);
         killsBoard.update(name, kill + 1);
-        ServerUtils.debug(debug, LangKeys.format("debugKillCount", name, kill + 1));
+        if (debug) console("debugKillCount", name, kill + 1);
     }
 
     public void displaySlot(int slot) {
@@ -282,10 +187,8 @@ public class Config extends IIConfig {
     }
 
     public boolean killCool(String name) {
-        Integer kill = kills.get(name);
-        if (kill >= killCoolLimit) {
-            ServerUtils.debug(debug, LangKeys.format("debugKillCool", name, kill, killCoolLimit));
-        }
+        int kill = kills.get(name);
+        if (debug && kill >= killCoolLimit) console("debugKillCool", name, kill, killCoolLimit);
         return kill >= killCoolLimit;
     }
 
@@ -297,15 +200,4 @@ public class Config extends IIConfig {
         return displaySlot;
     }
 
-    public String lang() {
-        return lang;
-    }
-
-    public void lang(String lang) {
-        if (lang != null && !lang.isEmpty()) {
-            this.lang = lang;
-            langKeys.setLang(lang);
-            killsBoard.setDisplayName(LangKeys.format("scoreboardDisplay"));
-        }
-    }
 }

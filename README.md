@@ -4,13 +4,9 @@
 
 ### 指令
 ```
+/zombie slot [0|1|2|3]          查看/设置 记分板显示位置
 /zombie allow [world]           允许 当前世界/[world]世界 在玩家周围生成僵尸
 /zombie disallow [world]        禁止 当前世界/[world]世界 在玩家周围生成僵尸
-/zombie speed [min-max]         查看/设置 僵尸行走速度等级范围
-/zombie health [min-max]        查看/设置 僵尸血量范围
-/zombie radius [min-max]        查看/设置 僵尸生成位置距离玩家半径范围
-/zombie refresh [tick]          查看/设置 僵尸生成(刷新)时间(tick)
-/zombie slot [0|1|2|3]          查看/设置 记分板显示位置
 ```
 
 ### 配置
