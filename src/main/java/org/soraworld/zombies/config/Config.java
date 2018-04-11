@@ -173,8 +173,7 @@ public class Config extends IIConfig {
 
     public void addKill(String name) {
         if (name == null || name.isEmpty()) return;
-        Integer kill = kills.get(name);
-        if (kill == null) kill = 0;
+        int kill = getKill(name);
         kills.put(name, kill + 1);
         killsBoard.update(name, kill + 1);
         if (debug) console("debugKillCount", name, kill + 1);
@@ -187,9 +186,18 @@ public class Config extends IIConfig {
     }
 
     public boolean killCool(String name) {
-        int kill = kills.get(name);
+        int kill = getKill(name);
         if (debug && kill >= killCoolLimit) console("debugKillCool", name, kill, killCoolLimit);
         return kill >= killCoolLimit;
+    }
+
+    private int getKill(String name) {
+        Integer kill = kills.get(name);
+        if (kill == null) {
+            kill = 0;
+            kills.put(name, kill);
+        }
+        return kill;
     }
 
     public int randDropExp() {

@@ -36,7 +36,8 @@ public class EventListener implements Listener {
             Zombie zombie = (Zombie) damagee;
             if (zombie.getHealth() - event.getDamage() > 0.0D) return;
             if (damager instanceof Player) {
-                config.addKill(damager.getName());
+                Player player = (Player) damager;
+                config.addKill(player.getName());
             } else if (damager instanceof Projectile) {
                 ProjectileSource source = ((Projectile) damager).getShooter();
                 if (source instanceof Player) config.addKill(((Player) source).getName());
