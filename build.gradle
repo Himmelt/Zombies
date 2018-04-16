@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 group = 'org.soraworld.zombies'
-version = '1.7.10-1.1.0'
+version = '1.7.10-1.1.1'
 archivesBaseName = "Zombies"
 
 sourceCompatibility = targetCompatibility = '1.7'
@@ -20,7 +20,7 @@ repositories {
 dependencies {
     compile 'org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT'
     compile files('lib/spigot-1.7.10.jar')
-    compile files('lib/Violet-1.7.10-1.1.6.jar')
+    compile files('lib/Violet-1.7.10-1.2.1.jar')
 }
 
 jar {

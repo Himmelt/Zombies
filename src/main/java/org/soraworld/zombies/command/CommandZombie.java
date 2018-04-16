@@ -2,21 +2,19 @@ package org.soraworld.zombies.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.soraworld.violet.command.CommandViolet;
 import org.soraworld.violet.command.IICommand;
 import org.soraworld.violet.constant.Violets;
 import org.soraworld.zombies.config.Config;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CommandZombie extends CommandViolet {
 
-    public CommandZombie(String name, String perm, final Config config, final Plugin plugin) {
-        super(name, perm, config, plugin);
+    public CommandZombie(String name, String perm, final Config config) {
+        super(name, perm, config);
         addSub(new IICommand("slot", config) {
-            @Override
-            public boolean execute(CommandSender sender, ArrayList<String> args) {
+            public boolean execute(CommandSender sender, List<String> args) {
                 if (args.isEmpty()) {
                     config.send(sender, "displaySlot" + config.displaySlot());
                 } else if (args.get(0).matches("[0-3]")) {
@@ -29,8 +27,7 @@ public class CommandZombie extends CommandViolet {
             }
         });
         addSub(new IICommand("allow", config) {
-            @Override
-            public boolean execute(CommandSender sender, ArrayList<String> args) {
+            public boolean execute(CommandSender sender, List<String> args) {
                 if (sender instanceof Player) {
                     if (args.isEmpty()) {
                         String world = ((Player) sender).getWorld().getName();
@@ -52,8 +49,7 @@ public class CommandZombie extends CommandViolet {
             }
         });
         addSub(new IICommand("disallow", config) {
-            @Override
-            public boolean execute(CommandSender sender, ArrayList<String> args) {
+            public boolean execute(CommandSender sender, List<String> args) {
                 if (sender instanceof Player) {
                     if (args.isEmpty()) {
                         String worldName = ((Player) sender).getWorld().getName();

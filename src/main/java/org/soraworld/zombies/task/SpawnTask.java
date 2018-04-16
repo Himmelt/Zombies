@@ -34,7 +34,7 @@ public class SpawnTask extends BukkitRunnable {
             if (System.currentTimeMillis() - last < config.killCoolTime() * 1000) {
                 spawnZombiesAround(player);
             } else {
-                if (config.debug()) config.console("debugRestartCooldown", player.getName());
+                if (config.getDebug()) config.consoleK("debugRestartCooldown", player.getName());
                 cools.put(player.getName(), System.currentTimeMillis());
                 config.clearKills(player.getName());
             }
@@ -70,10 +70,10 @@ public class SpawnTask extends BukkitRunnable {
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, config.randSpeed()), false);
                 zombie.addPotionEffect(FIRE_RESISTANCE);
                 zombie.setCanPickupItems(false);
-                if (config.debug()) config.console("debugSpawnAround", player.getName());
+                if (config.getDebug()) config.consoleK("debugSpawnAround", player.getName());
             }
         } else {
-            if (config.debug()) config.console("debugAroundUptoLimit", player.getName());
+            if (config.getDebug()) config.consoleK("debugAroundUptoLimit", player.getName());
         }
     }
 

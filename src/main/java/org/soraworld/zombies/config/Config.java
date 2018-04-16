@@ -1,7 +1,6 @@
 package org.soraworld.zombies.config;
 
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
 import org.soraworld.violet.config.IIConfig;
 import org.soraworld.zombies.constant.Constant;
 import org.soraworld.zombies.flans.Flans;
@@ -35,8 +34,8 @@ public class Config extends IIConfig {
     private final ScoreBoards killsBoard = new ScoreBoards();
     private final HashMap<String, Integer> kills = new HashMap<>();
 
-    public Config(File path, Plugin plugin) {
-        super(path, plugin);
+    public Config(File path) {
+        super(path);
     }
 
     public boolean customDrops() {
@@ -46,78 +45,64 @@ public class Config extends IIConfig {
     protected void loadOptions() {
         allowWorlds.clear();
         // speed
-        String speed = config_yaml.getString("speed");
+        String speed = getCfgYaml().getString("speed");
         if (speed != null && speed.matches("[0-9]+-[0-9]+")) {
             String[] ss = speed.split("-");
             minSpeed = Integer.valueOf(ss[0]);
             maxSpeed = Integer.valueOf(ss[1]);
         }
         // health
-        String health = config_yaml.getString("health");
+        String health = getCfgYaml().getString("health");
         if (health != null && health.matches("[0-9]+-[0-9]+")) {
             String[] ss = health.split("-");
             minHealth = Integer.valueOf(ss[0]);
             maxHealth = Integer.valueOf(ss[1]);
         }
         // spawnRadius
-        String spawnRadius = config_yaml.getString("spawnRadius");
+        String spawnRadius = getCfgYaml().getString("spawnRadius");
         if (spawnRadius != null && spawnRadius.matches("[0-9]+-[0-9]+")) {
             String[] ss = spawnRadius.split("-");
             minSpawnRadius = Integer.valueOf(ss[0]);
             maxSpawnRadius = Integer.valueOf(ss[1]);
         }
-        refresh = config_yaml.getInt("refresh");
-        spawnLimit = config_yaml.getInt("spawnLimit");
-        killCoolLimit = config_yaml.getInt("killCoolLimit");
-        killCoolTime = config_yaml.getInt("killCoolTime");
-        babyChance = config_yaml.getDouble("babyChance");
-        customDrops = config_yaml.getBoolean("customDrops");
+        refresh = getCfgYaml().getInt("refresh");
+        spawnLimit = getCfgYaml().getInt("spawnLimit");
+        killCoolLimit = getCfgYaml().getInt("killCoolLimit");
+        killCoolTime = getCfgYaml().getInt("killCoolTime");
+        babyChance = getCfgYaml().getDouble("babyChance");
+        customDrops = getCfgYaml().getBoolean("customDrops");
         // dropExp
-        String dropExp = config_yaml.getString("dropExp");
+        String dropExp = getCfgYaml().getString("dropExp");
         if (dropExp != null && dropExp.matches("[0-9]+-[0-9]+")) {
             String[] ss = dropExp.split("-");
             minDropExp = Integer.valueOf(ss[0]);
             maxDropExp = Integer.valueOf(ss[1]);
         }
-        displaySlot = config_yaml.getInt("displaySlot");
-        allowWorlds.addAll(config_yaml.getStringList("allowWorlds"));
+        displaySlot = getCfgYaml().getInt("displaySlot");
+        allowWorlds.addAll(getCfgYaml().getStringList("allowWorlds"));
 
         if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
         killsBoard.setDisplaySlot(displaySlot);
-        killsBoard.setDisplayName(iiLang.format("scoreboardDisplay").replace('&', ChatColor.COLOR_CHAR));
+        killsBoard.setDisplayName(formatKey("scoreboardDisplay").replace('&', ChatColor.COLOR_CHAR));
     }
 
     protected void saveOptions() {
-        config_yaml.set("speed", minSpeed + "-" + maxSpeed);
-        config_yaml.set("health", minHealth + "-" + maxHealth);
-        config_yaml.set("spawnRadius", minSpawnRadius + "-" + maxSpawnRadius);
-        config_yaml.set("refresh", refresh);
-        config_yaml.set("spawnLimit", spawnLimit);
-        config_yaml.set("killCoolLimit", killCoolLimit);
-        config_yaml.set("killCoolTime", killCoolTime);
-        config_yaml.set("babyChance", babyChance);
-        config_yaml.set("customDrops", customDrops);
-        config_yaml.set("dropExp", minDropExp + "-" + maxDropExp);
-        config_yaml.set("displaySlot", displaySlot);
-        config_yaml.set("allowWorlds", new ArrayList<>(allowWorlds));
+        getCfgYaml().set("speed", minSpeed + "-" + maxSpeed);
+        getCfgYaml().set("health", minHealth + "-" + maxHealth);
+        getCfgYaml().set("spawnRadius", minSpawnRadius + "-" + maxSpawnRadius);
+        getCfgYaml().set("refresh", refresh);
+        getCfgYaml().set("spawnLimit", spawnLimit);
+        getCfgYaml().set("killCoolLimit", killCoolLimit);
+        getCfgYaml().set("killCoolTime", killCoolTime);
+        getCfgYaml().set("babyChance", babyChance);
+        getCfgYaml().set("customDrops", customDrops);
+        getCfgYaml().set("dropExp", minDropExp + "-" + maxDropExp);
+        getCfgYaml().set("displaySlot", displaySlot);
+        getCfgYaml().set("allowWorlds", new ArrayList<>(allowWorlds));
     }
 
     public void afterLoad() {
         Flans.checkFlans(this);
-    }
-
-    @Nonnull
-    protected ChatColor defaultChatColor() {
-        return ChatColor.RED;
-    }
-
-    @Nonnull
-    protected String defaultChatHead() {
-        return "[" + Constant.PLUGIN_NAME + "] ";
-    }
-
-    public String defaultAdminPerm() {
-        return Constant.PERM_ADMIN;
     }
 
     public int randSpeed() {
@@ -176,7 +161,7 @@ public class Config extends IIConfig {
         int kill = getKill(name);
         kills.put(name, kill + 1);
         killsBoard.update(name, kill + 1);
-        if (debug) console("debugKillCount", name, kill + 1);
+        if (getDebug()) consoleK("debugKillCount", name, kill + 1);
     }
 
     public void displaySlot(int slot) {
@@ -187,7 +172,7 @@ public class Config extends IIConfig {
 
     public boolean killCool(String name) {
         int kill = getKill(name);
-        if (debug && kill >= killCoolLimit) console("debugKillCool", name, kill, killCoolLimit);
+        if (getDebug() && kill >= killCoolLimit) consoleK("debugKillCool", name, kill, killCoolLimit);
         return kill >= killCoolLimit;
     }
 
@@ -208,4 +193,21 @@ public class Config extends IIConfig {
         return displaySlot;
     }
 
+    @Nonnull
+    public String getAdminPerm() {
+        return Constant.PERM_ADMIN;
+    }
+
+    @Nonnull
+    public ChatColor getHeadColor() {
+        return ChatColor.RED;
+    }
+
+    @Nonnull
+    public String getPlainHead() {
+        return "[" + Constant.PLUGIN_NAME + "] ";
+    }
+
+    public void setPlainHead(String s) {
+    }
 }

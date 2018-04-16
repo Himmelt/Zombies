@@ -1,5 +1,5 @@
 name: Zombies
-version: 1.7.10-1.1.0
+version: 1.7.10-1.1.1
 author: Himmelt
 main: org.soraworld.zombies.Zombies
 depend: [Violet]
