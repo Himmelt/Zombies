@@ -2,8 +2,8 @@ package org.soraworld.zombies.command;
 
 import org.bukkit.entity.Player;
 import org.soraworld.violet.command.VioletCommand;
-import org.soraworld.violet.config.VioletManager;
 import org.soraworld.violet.constant.Violets;
+import org.soraworld.zombies.config.ZombiesManager;
 import rikka.api.command.CommandArgs;
 import rikka.api.command.ExecuteResult;
 import rikka.api.command.ICommandSender;
@@ -11,9 +11,9 @@ import rikka.api.command.IICommand;
 
 public class CommandZombie extends VioletCommand {
 
-    public CommandZombie(String name, String perm, final VioletManager manager) {
+    public CommandZombie(String name, String perm, final ZombiesManager manager) {
         super(perm, false, manager, "zombie");
-        addSub(new IICommand("slot", manager) {
+        addSub(new IICommand(perm, false, "slot") {
             public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
                 if (args.empty()) {
                     manager.sendKey(sender, "displaySlot" + manager.displaySlot());
@@ -26,7 +26,7 @@ public class CommandZombie extends VioletCommand {
                 return ExecuteResult.SUCCESS;
             }
         });
-        addSub(new IICommand("allow", manager) {
+        addSub(new IICommand(perm, false, "allow") {
             public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
                 if (sender instanceof Player) {
                     if (args.empty()) {
@@ -48,7 +48,7 @@ public class CommandZombie extends VioletCommand {
                 return ExecuteResult.FAILED;
             }
         });
-        addSub(new IICommand("disallow", manager) {
+        addSub(new IICommand(perm, false, "disallow") {
             public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
                 if (sender instanceof Player) {
                     if (args.empty()) {

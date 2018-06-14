@@ -5,98 +5,82 @@ import org.soraworld.violet.config.VioletManager;
 import org.soraworld.zombies.flans.Flans;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class ZombiesManager extends VioletManager {
 
-    private int minSpeed = 0;
-    private int maxSpeed = 1;
-    private int minHealth = 10;
-    private int maxHealth = 20;
-    private int minSpawnRadius = 15;
-    private int maxSpawnRadius = 25;
-    private int refresh = 50;
-    private int spawnLimit = 30;
-    private int killCoolLimit = 80;
-    private int killCoolTime = 300;
-    private double babyChance = 0.0F;
-    private boolean customDrops = false;
-    private int minDropExp = 0;
-    private int maxDropExp = 0;
-    private int displaySlot = 0;
-    private final HashSet<String> allowWorlds = new HashSet<>();
-
+    private final ZombiesSetting ss;
     private final ScoreBoards killsBoard = new ScoreBoards();
     private final HashMap<String, Integer> kills = new HashMap<>();
 
-    public ZombiesManager(File path) {
-        super(path);
+    public ZombiesManager(Path path) {
+        super(path, new ZombiesSetting());
+        ss = (ZombiesSetting) setting;
     }
 
     public boolean customDrops() {
-        return customDrops;
+        return ss.customDrops;
     }
 
     protected void loadOptions() {
-        allowWorlds.clear();
+        ss.allowWorlds.clear();
         // speed
         String speed = getCfgYaml().getString("speed");
         if (speed != null && speed.matches("[0-9]+-[0-9]+")) {
             String[] ss = speed.split("-");
-            minSpeed = Integer.valueOf(ss[0]);
-            maxSpeed = Integer.valueOf(ss[1]);
+            this.ss.minSpeed = Integer.valueOf(ss[0]);
+            this.ss.maxSpeed = Integer.valueOf(ss[1]);
         }
         // health
         String health = getCfgYaml().getString("health");
         if (health != null && health.matches("[0-9]+-[0-9]+")) {
             String[] ss = health.split("-");
-            minHealth = Integer.valueOf(ss[0]);
-            maxHealth = Integer.valueOf(ss[1]);
+            this.ss.minHealth = Integer.valueOf(ss[0]);
+            this.ss.maxHealth = Integer.valueOf(ss[1]);
         }
         // spawnRadius
         String spawnRadius = getCfgYaml().getString("spawnRadius");
         if (spawnRadius != null && spawnRadius.matches("[0-9]+-[0-9]+")) {
             String[] ss = spawnRadius.split("-");
-            minSpawnRadius = Integer.valueOf(ss[0]);
-            maxSpawnRadius = Integer.valueOf(ss[1]);
+            this.ss.minSpawnRadius = Integer.valueOf(ss[0]);
+            this.ss.maxSpawnRadius = Integer.valueOf(ss[1]);
         }
-        refresh = getCfgYaml().getInt("refresh");
-        spawnLimit = getCfgYaml().getInt("spawnLimit");
-        killCoolLimit = getCfgYaml().getInt("killCoolLimit");
-        killCoolTime = getCfgYaml().getInt("killCoolTime");
-        babyChance = getCfgYaml().getDouble("babyChance");
-        customDrops = getCfgYaml().getBoolean("customDrops");
+        ss.refresh = getCfgYaml().getInt("refresh");
+        ss.spawnLimit = getCfgYaml().getInt("spawnLimit");
+        ss.killCoolLimit = getCfgYaml().getInt("killCoolLimit");
+        ss.killCoolTime = getCfgYaml().getInt("killCoolTime");
+        ss.babyChance = getCfgYaml().getDouble("babyChance");
+        ss.customDrops = getCfgYaml().getBoolean("customDrops");
         // dropExp
         String dropExp = getCfgYaml().getString("dropExp");
         if (dropExp != null && dropExp.matches("[0-9]+-[0-9]+")) {
             String[] ss = dropExp.split("-");
-            minDropExp = Integer.valueOf(ss[0]);
-            maxDropExp = Integer.valueOf(ss[1]);
+            this.ss.minDropExp = Integer.valueOf(ss[0]);
+            this.ss.maxDropExp = Integer.valueOf(ss[1]);
         }
-        displaySlot = getCfgYaml().getInt("displaySlot");
-        allowWorlds.addAll(getCfgYaml().getStringList("allowWorlds"));
+        ss.displaySlot = getCfgYaml().getInt("displaySlot");
+        ss.allowWorlds.addAll(getCfgYaml().getStringList("allowWorlds"));
 
-        if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
-        killsBoard.setDisplaySlot(displaySlot);
+        if (ss.displaySlot < 0 || ss.displaySlot > 3) ss.displaySlot = 0;
+        killsBoard.setDisplaySlot(ss.displaySlot);
         killsBoard.setDisplayName(formatKey("scoreboardDisplay").replace('&', ChatColor.COLOR_CHAR));
     }
 
     protected void saveOptions() {
-        getCfgYaml().set("speed", minSpeed + "-" + maxSpeed);
-        getCfgYaml().set("health", minHealth + "-" + maxHealth);
-        getCfgYaml().set("spawnRadius", minSpawnRadius + "-" + maxSpawnRadius);
-        getCfgYaml().set("refresh", refresh);
-        getCfgYaml().set("spawnLimit", spawnLimit);
-        getCfgYaml().set("killCoolLimit", killCoolLimit);
-        getCfgYaml().set("killCoolTime", killCoolTime);
-        getCfgYaml().set("babyChance", babyChance);
-        getCfgYaml().set("customDrops", customDrops);
-        getCfgYaml().set("dropExp", minDropExp + "-" + maxDropExp);
-        getCfgYaml().set("displaySlot", displaySlot);
-        getCfgYaml().set("allowWorlds", new ArrayList<>(allowWorlds));
+        getCfgYaml().set("speed", ss.minSpeed + "-" + ss.maxSpeed);
+        getCfgYaml().set("health", ss.minHealth + "-" + ss.maxHealth);
+        getCfgYaml().set("spawnRadius", ss.minSpawnRadius + "-" + ss.maxSpawnRadius);
+        getCfgYaml().set("refresh", ss.refresh);
+        getCfgYaml().set("spawnLimit", ss.spawnLimit);
+        getCfgYaml().set("killCoolLimit", ss.killCoolLimit);
+        getCfgYaml().set("killCoolTime", ss.killCoolTime);
+        getCfgYaml().set("babyChance", ss.babyChance);
+        getCfgYaml().set("customDrops", ss.customDrops);
+        getCfgYaml().set("dropExp", ss.minDropExp + "-" + ss.maxDropExp);
+        getCfgYaml().set("displaySlot", ss.displaySlot);
+        getCfgYaml().set("allowWorlds", new ArrayList<>(ss.allowWorlds));
     }
 
     public void afterLoad() {
@@ -104,50 +88,50 @@ public class ZombiesManager extends VioletManager {
     }
 
     public int randSpeed() {
-        return (int) (minSpeed + Math.abs(maxSpeed - minSpeed) * Math.random());
+        return (int) (ss.minSpeed + Math.abs(ss.maxSpeed - ss.minSpeed) * Math.random());
     }
 
     public double randHealth() {
-        return minHealth + Math.abs(maxHealth - minHealth) * Math.random();
+        return ss.minHealth + Math.abs(ss.maxHealth - ss.minHealth) * Math.random();
     }
 
     public void allow(String world) {
-        allowWorlds.add(world);
+        ss.allowWorlds.add(world);
         save();
     }
 
     public void disallow(String world) {
-        allowWorlds.remove(world);
+        ss.allowWorlds.remove(world);
         save();
     }
 
     public boolean isAllow(String world) {
-        return allowWorlds.contains(world);
+        return ss.allowWorlds.contains(world);
     }
 
     public double getBabyChance() {
-        return babyChance > 0 ? babyChance > 1 ? 1 : babyChance : 0;
+        return ss.babyChance > 0 ? ss.babyChance > 1 ? 1 : ss.babyChance : 0;
     }
 
     public long refresh() {
-        if (refresh < 1) refresh = 1;
-        return refresh;
+        if (ss.refresh < 1) ss.refresh = 1;
+        return ss.refresh;
     }
 
     public double randSpawnRadius() {
-        return minSpawnRadius + Math.abs(maxSpawnRadius - minSpawnRadius) * Math.random();
+        return ss.minSpawnRadius + Math.abs(ss.maxSpawnRadius - ss.minSpawnRadius) * Math.random();
     }
 
     public int spawnLimit() {
-        return spawnLimit;
+        return ss.spawnLimit;
     }
 
     public int maxSpawnRadius() {
-        return maxSpawnRadius;
+        return ss.maxSpawnRadius;
     }
 
     public int killCoolTime() {
-        return killCoolTime;
+        return ss.killCoolTime;
     }
 
     public void clearKills(String name) {
@@ -159,19 +143,19 @@ public class ZombiesManager extends VioletManager {
         int kill = getKill(name);
         kills.put(name, kill + 1);
         killsBoard.update(name, kill + 1);
-        if (getDebug()) consoleK("debugKillCount", name, kill + 1);
+        if (debug) consoleKey("debugKillCount", name, kill + 1);
     }
 
     public void displaySlot(int slot) {
-        displaySlot = slot;
-        if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
+        ss.displaySlot = slot;
+        if (ss.displaySlot < 0 || ss.displaySlot > 3) ss.displaySlot = 0;
         killsBoard.setDisplaySlot(slot);
     }
 
     public boolean killCool(String name) {
         int kill = getKill(name);
-        if (getDebug() && kill >= killCoolLimit) consoleK("debugKillCool", name, kill, killCoolLimit);
-        return kill >= killCoolLimit;
+        if (debug && kill >= ss.killCoolLimit) consoleKey("debugKillCool", name, kill, ss.killCoolLimit);
+        return kill >= ss.killCoolLimit;
     }
 
     private int getKill(String name) {
@@ -184,11 +168,11 @@ public class ZombiesManager extends VioletManager {
     }
 
     public int randDropExp() {
-        return (int) (minDropExp + Math.abs(maxDropExp - minDropExp) * Math.random());
+        return (int) (ss.minDropExp + Math.abs(ss.maxDropExp - ss.minDropExp) * Math.random());
     }
 
     public int displaySlot() {
-        return displaySlot;
+        return ss.displaySlot;
     }
 
 }
