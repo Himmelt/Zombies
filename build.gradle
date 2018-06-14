@@ -1,16 +1,20 @@
 apply plugin: 'java'
 
 group = 'org.soraworld.zombies'
-version = '1.7.10-1.1.1'
-archivesBaseName = "Zombies"
+version = '2.0.0'
+archivesBaseName = 'Zombies'
 
-sourceCompatibility = targetCompatibility = '1.7'
+sourceCompatibility = targetCompatibility = 1.8
 compileJava {
-    sourceCompatibility = targetCompatibility = '1.7'
+    sourceCompatibility = targetCompatibility = 1.8
 }
 
 repositories {
     jcenter()
+    maven {
+        name = 'sponge'
+        url = 'https://repo.spongepowered.org/maven'
+    }
     maven {
         name = 'spigot'
         url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
@@ -18,9 +22,12 @@ repositories {
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT'
-    compile files('lib/spigot-1.7.10.jar')
-    compile files('lib/Violet-1.7.10-1.2.1.jar')
+    compile 'com.google.code.findbugs:jsr305:3.0.1'
+    compile 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:7.1.0-SNAPSHOT'
+
+    compile files('lib/spigot-nms.jar')
+    compile files('lib/Violet-2.0.0.jar')
 }
 
 jar {

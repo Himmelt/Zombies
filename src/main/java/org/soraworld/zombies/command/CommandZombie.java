@@ -1,73 +1,73 @@
 package org.soraworld.zombies.command;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.soraworld.violet.command.CommandViolet;
-import org.soraworld.violet.command.IICommand;
+import org.soraworld.violet.command.VioletCommand;
+import org.soraworld.violet.config.VioletManager;
 import org.soraworld.violet.constant.Violets;
-import org.soraworld.zombies.config.Config;
+import rikka.api.command.CommandArgs;
+import rikka.api.command.ExecuteResult;
+import rikka.api.command.ICommandSender;
+import rikka.api.command.IICommand;
 
-import java.util.List;
+public class CommandZombie extends VioletCommand {
 
-public class CommandZombie extends CommandViolet {
-
-    public CommandZombie(String name, String perm, final Config config) {
-        super(name, perm, config);
-        addSub(new IICommand("slot", config) {
-            public boolean execute(CommandSender sender, List<String> args) {
-                if (args.isEmpty()) {
-                    config.send(sender, "displaySlot" + config.displaySlot());
+    public CommandZombie(String name, String perm, final VioletManager manager) {
+        super(perm, false, manager, "zombie");
+        addSub(new IICommand("slot", manager) {
+            public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
+                if (args.empty()) {
+                    manager.sendKey(sender, "displaySlot" + manager.displaySlot());
                 } else if (args.get(0).matches("[0-3]")) {
-                    config.displaySlot(Integer.valueOf(args.get(0)));
-                    config.send(sender, "displaySlot" + config.displaySlot());
+                    manager.displaySlot(Integer.valueOf(args.get(0)));
+                    manager.sendKey(sender, "displaySlot" + manager.displaySlot());
                 } else {
-                    config.send(sender, "slotUsage");
+                    manager.sendKey(sender, "slotUsage");
                 }
-                return true;
+                return ExecuteResult.SUCCESS;
             }
         });
-        addSub(new IICommand("allow", config) {
-            public boolean execute(CommandSender sender, List<String> args) {
+        addSub(new IICommand("allow", manager) {
+            public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
                 if (sender instanceof Player) {
-                    if (args.isEmpty()) {
+                    if (args.empty()) {
                         String world = ((Player) sender).getWorld().getName();
-                        config.allow(world);
-                        config.send(sender, "worldAllowed", world);
+                        manager.allow(world);
+                        manager.sendKey(sender, "worldAllowed", world);
                     } else {
-                        config.allow(args.get(0));
-                        config.send(sender, "worldAllowed", args.get(0));
+                        manager.allow(args.get(0));
+                        manager.sendKey(sender, "worldAllowed", args.get(0));
                     }
-                    return true;
+                    return ExecuteResult.SUCCESS;
                 }
-                if (!args.isEmpty()) {
-                    config.allow(args.get(0));
-                    config.send(sender, "worldAllowed", args.get(0));
-                    return true;
+                if (args.notEmpty()) {
+                    manager.allow(args.get(0));
+                    manager.sendKey(sender, "worldAllowed", args.get(0));
+                    return ExecuteResult.SUCCESS;
                 }
-                config.sendV(sender, Violets.KEY_INVALID_ARG);
-                return false;
+                manager.sendVKey(sender, Violets.KEY_INVALID_ARG);
+                return ExecuteResult.FAILED;
             }
         });
-        addSub(new IICommand("disallow", config) {
-            public boolean execute(CommandSender sender, List<String> args) {
+        addSub(new IICommand("disallow", manager) {
+            public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
                 if (sender instanceof Player) {
-                    if (args.isEmpty()) {
+                    if (args.empty()) {
                         String worldName = ((Player) sender).getWorld().getName();
-                        config.disallow(worldName);
-                        config.send(sender, "worldDisallowed", worldName);
+                        manager.disallow(worldName);
+                        manager.sendKey(sender, "worldDisallowed", worldName);
                     } else {
-                        config.disallow(args.get(0));
-                        config.send(sender, "worldDisallowed", args.get(0));
+                        manager.disallow(args.get(0));
+                        manager.sendKey(sender, "worldDisallowed", args.get(0));
                     }
-                    return true;
+                    return ExecuteResult.SUCCESS;
                 }
-                if (!args.isEmpty()) {
-                    config.disallow(args.get(0));
-                    config.send(sender, "worldDisallowed", args.get(0));
-                    return true;
+                if (args.notEmpty()) {
+                    manager.disallow(args.get(0));
+                    manager.sendKey(sender, "worldDisallowed", args.get(0));
+                    return ExecuteResult.SUCCESS;
                 }
-                config.send(sender, "invalidWorldName");
-                return false;
+                manager.sendKey(sender, "invalidWorldName");
+                return ExecuteResult.FAILED;
             }
         });
     }

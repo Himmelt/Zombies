@@ -1,18 +1,16 @@
 package org.soraworld.zombies.config;
 
 import org.bukkit.ChatColor;
-import org.soraworld.violet.config.IIConfig;
-import org.soraworld.zombies.constant.Constant;
+import org.soraworld.violet.config.VioletManager;
 import org.soraworld.zombies.flans.Flans;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Config extends IIConfig {
+public class ZombiesManager extends VioletManager {
 
     private int minSpeed = 0;
     private int maxSpeed = 1;
@@ -34,7 +32,7 @@ public class Config extends IIConfig {
     private final ScoreBoards killsBoard = new ScoreBoards();
     private final HashMap<String, Integer> kills = new HashMap<>();
 
-    public Config(File path) {
+    public ZombiesManager(File path) {
         super(path);
     }
 
@@ -193,21 +191,4 @@ public class Config extends IIConfig {
         return displaySlot;
     }
 
-    @Nonnull
-    public String getAdminPerm() {
-        return Constant.PERM_ADMIN;
-    }
-
-    @Nonnull
-    public ChatColor getHeadColor() {
-        return ChatColor.RED;
-    }
-
-    @Nonnull
-    public String getPlainHead() {
-        return "[" + Constant.PLUGIN_NAME + "] ";
-    }
-
-    public void setPlainHead(String s) {
-    }
 }

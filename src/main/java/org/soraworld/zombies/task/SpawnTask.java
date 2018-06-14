@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.soraworld.zombies.config.Config;
+import org.soraworld.zombies.config.ZombiesManager;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,7 +22,7 @@ public class SpawnTask extends BukkitRunnable {
     private final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 6000, 1);
 
     private static SpawnTask task;
-    private static Config config;
+    private static ZombiesManager zombiesManager;
 
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -31,55 +31,55 @@ public class SpawnTask extends BukkitRunnable {
                 last = System.currentTimeMillis();
                 cools.put(player.getName(), last);
             }
-            if (System.currentTimeMillis() - last < config.killCoolTime() * 1000) {
+            if (System.currentTimeMillis() - last < zombiesManager.killCoolTime() * 1000) {
                 spawnZombiesAround(player);
             } else {
-                if (config.getDebug()) config.consoleK("debugRestartCooldown", player.getName());
+                if (zombiesManager.getDebug()) zombiesManager.consoleK("debugRestartCooldown", player.getName());
                 cools.put(player.getName(), System.currentTimeMillis());
-                config.clearKills(player.getName());
+                zombiesManager.clearKills(player.getName());
             }
         }
         Iterator<Map.Entry<String, Long>> it = cools.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, Long> entry = it.next();
-            if (Bukkit.getPlayer(entry.getKey()) == null && System.currentTimeMillis() - entry.getValue() > config.killCoolTime() * 1000) {
+            if (Bukkit.getPlayer(entry.getKey()) == null && System.currentTimeMillis() - entry.getValue() > zombiesManager.killCoolTime() * 1000) {
                 it.remove();
-                config.clearKills(entry.getKey());
+                zombiesManager.clearKills(entry.getKey());
             }
         }
     }
 
     private void spawnZombiesAround(final Player player) {
-        if (player.getGameMode() != GameMode.SURVIVAL || !config.isAllow(player.getWorld().getName())) return;
-        if (config.killCool(player.getName())) return;
-        int radius = config.maxSpawnRadius();
+        if (player.getGameMode() != GameMode.SURVIVAL || !zombiesManager.isAllow(player.getWorld().getName())) return;
+        if (zombiesManager.killCool(player.getName())) return;
+        int radius = zombiesManager.maxSpawnRadius();
         List<Entity> entities = player.getNearbyEntities(radius, radius, radius);
         int count = 0;
         for (Entity entity : entities) {
             if (entity instanceof Zombie) count++;
         }
-        if (count < config.spawnLimit()) {
+        if (count < zombiesManager.spawnLimit()) {
             Location location = randomLocation(player);
             if (location != null) {
-                double health = config.randHealth();
-                double mutate = config.getBabyChance();
+                double health = zombiesManager.randHealth();
+                double mutate = zombiesManager.getBabyChance();
                 Zombie zombie = player.getWorld().spawn(location, Zombie.class);
                 zombie.setMaxHealth(health);
                 zombie.setHealth(health * 0.99);
                 zombie.setBaby(Math.random() < mutate);
-                zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, config.randSpeed()), false);
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, zombiesManager.randSpeed()), false);
                 zombie.addPotionEffect(FIRE_RESISTANCE);
                 zombie.setCanPickupItems(false);
-                if (config.getDebug()) config.consoleK("debugSpawnAround", player.getName());
+                if (zombiesManager.getDebug()) zombiesManager.consoleK("debugSpawnAround", player.getName());
             }
         } else {
-            if (config.getDebug()) config.consoleK("debugAroundUptoLimit", player.getName());
+            if (zombiesManager.getDebug()) zombiesManager.consoleK("debugAroundUptoLimit", player.getName());
         }
     }
 
     private Location randomLocation(Player player) {
         Location origin = player.getLocation();
-        double radius = config.randSpawnRadius();
+        double radius = zombiesManager.randSpawnRadius();
         double theta = Math.random() * 6.28318531D;
         int x = (int) (origin.getBlockX() + Math.sin(theta) * radius);
         int z = (int) (origin.getBlockZ() + Math.cos(theta) * radius);
@@ -112,11 +112,11 @@ public class SpawnTask extends BukkitRunnable {
         return -1;
     }
 
-    public static void runNewTask(Plugin plugin, Config config) {
-        SpawnTask.config = config;
+    public static void runNewTask(Plugin plugin, ZombiesManager zombiesManager) {
+        SpawnTask.zombiesManager = zombiesManager;
         if (task != null) task.cancel();
         task = new SpawnTask();
-        task.runTaskTimer(plugin, config.refresh(), config.refresh());
+        task.runTaskTimer(plugin, zombiesManager.refresh(), zombiesManager.refresh());
     }
 
 }
