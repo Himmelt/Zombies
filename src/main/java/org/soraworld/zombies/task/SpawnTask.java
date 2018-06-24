@@ -22,7 +22,7 @@ public class SpawnTask extends BukkitRunnable {
     private final PotionEffect FIRE_RESISTANCE = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 6000, 1);
 
     private static SpawnTask task;
-    private static ZombiesManager zombiesManager;
+    private static ZombiesManager manager;
 
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -31,55 +31,55 @@ public class SpawnTask extends BukkitRunnable {
                 last = System.currentTimeMillis();
                 cools.put(player.getName(), last);
             }
-            if (System.currentTimeMillis() - last < zombiesManager.killCoolTime() * 1000) {
+            if (System.currentTimeMillis() - last < manager.killCoolTime * 1000) {
                 spawnZombiesAround(player);
             } else {
-                if (zombiesManager.getDebug()) zombiesManager.consoleK("debugRestartCooldown", player.getName());
+                if (manager.debug) manager.consoleKey("debugRestartCooldown", player.getName());
                 cools.put(player.getName(), System.currentTimeMillis());
-                zombiesManager.clearKills(player.getName());
+                manager.clearKills(player.getName());
             }
         }
         Iterator<Map.Entry<String, Long>> it = cools.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, Long> entry = it.next();
-            if (Bukkit.getPlayer(entry.getKey()) == null && System.currentTimeMillis() - entry.getValue() > zombiesManager.killCoolTime() * 1000) {
+            if (Bukkit.getPlayer(entry.getKey()) == null && System.currentTimeMillis() - entry.getValue() > manager.killCoolTime * 1000) {
                 it.remove();
-                zombiesManager.clearKills(entry.getKey());
+                manager.clearKills(entry.getKey());
             }
         }
     }
 
     private void spawnZombiesAround(final Player player) {
-        if (player.getGameMode() != GameMode.SURVIVAL || !zombiesManager.isAllow(player.getWorld().getName())) return;
-        if (zombiesManager.killCool(player.getName())) return;
-        int radius = zombiesManager.maxSpawnRadius();
+        if (player.getGameMode() != GameMode.SURVIVAL || !manager.isAllow(player.getWorld().getName())) return;
+        if (manager.killCool(player.getName())) return;
+        int radius = manager.maxSpawnRadius;
         List<Entity> entities = player.getNearbyEntities(radius, radius, radius);
         int count = 0;
         for (Entity entity : entities) {
             if (entity instanceof Zombie) count++;
         }
-        if (count < zombiesManager.spawnLimit()) {
+        if (count < manager.spawnLimit) {
             Location location = randomLocation(player);
             if (location != null) {
-                double health = zombiesManager.randHealth();
-                double mutate = zombiesManager.getBabyChance();
+                double health = manager.randHealth();
+                double mutate = manager.getBabyChance();
                 Zombie zombie = player.getWorld().spawn(location, Zombie.class);
                 zombie.setMaxHealth(health);
                 zombie.setHealth(health * 0.99);
                 zombie.setBaby(Math.random() < mutate);
-                zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, zombiesManager.randSpeed()), false);
+                zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, manager.randSpeed()), false);
                 zombie.addPotionEffect(FIRE_RESISTANCE);
                 zombie.setCanPickupItems(false);
-                if (zombiesManager.getDebug()) zombiesManager.consoleK("debugSpawnAround", player.getName());
+                if (manager.debug) manager.consoleKey("debugSpawnAround", player.getName());
             }
         } else {
-            if (zombiesManager.getDebug()) zombiesManager.consoleK("debugAroundUptoLimit", player.getName());
+            if (manager.debug) manager.consoleKey("debugAroundUptoLimit", player.getName());
         }
     }
 
     private Location randomLocation(Player player) {
         Location origin = player.getLocation();
-        double radius = zombiesManager.randSpawnRadius();
+        double radius = manager.randSpawnRadius();
         double theta = Math.random() * 6.28318531D;
         int x = (int) (origin.getBlockX() + Math.sin(theta) * radius);
         int z = (int) (origin.getBlockZ() + Math.cos(theta) * radius);
@@ -112,11 +112,11 @@ public class SpawnTask extends BukkitRunnable {
         return -1;
     }
 
-    public static void runNewTask(Plugin plugin, ZombiesManager zombiesManager) {
-        SpawnTask.zombiesManager = zombiesManager;
+    public static void runNewTask(Plugin plugin, ZombiesManager manager) {
+        SpawnTask.manager = manager;
         if (task != null) task.cancel();
         task = new SpawnTask();
-        task.runTaskTimer(plugin, zombiesManager.refresh(), zombiesManager.refresh());
+        task.runTaskTimer(plugin, manager.refresh(), manager.refresh());
     }
 
 }

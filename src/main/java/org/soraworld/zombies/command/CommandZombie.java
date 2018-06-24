@@ -8,18 +8,19 @@ import rikka.api.command.CommandArgs;
 import rikka.api.command.ExecuteResult;
 import rikka.api.command.ICommandSender;
 import rikka.api.command.IICommand;
+import rikka.api.entity.living.IPlayer;
 
 public class CommandZombie extends VioletCommand {
 
-    public CommandZombie(String name, String perm, final ZombiesManager manager) {
+    public CommandZombie(String perm, final ZombiesManager manager) {
         super(perm, false, manager, "zombie");
         addSub(new IICommand(perm, false, "slot") {
             public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
                 if (args.empty()) {
-                    manager.sendKey(sender, "displaySlot" + manager.displaySlot());
+                    manager.sendKey(sender, "displaySlot" + manager.displaySlot);
                 } else if (args.get(0).matches("[0-3]")) {
                     manager.displaySlot(Integer.valueOf(args.get(0)));
-                    manager.sendKey(sender, "displaySlot" + manager.displaySlot());
+                    manager.sendKey(sender, "displaySlot" + manager.displaySlot);
                 } else {
                     manager.sendKey(sender, "slotUsage");
                 }
@@ -28,9 +29,10 @@ public class CommandZombie extends VioletCommand {
         });
         addSub(new IICommand(perm, false, "allow") {
             public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
-                if (sender instanceof Player) {
+                if (sender instanceof IPlayer) {
                     if (args.empty()) {
-                        String world = ((Player) sender).getWorld().getName();
+                        // TODO
+                        String world = ((IPlayer) sender).getWorld().toString();
                         manager.allow(world);
                         manager.sendKey(sender, "worldAllowed", world);
                     } else {
@@ -40,11 +42,11 @@ public class CommandZombie extends VioletCommand {
                     return ExecuteResult.SUCCESS;
                 }
                 if (args.notEmpty()) {
-                    manager.allow(args.get(0));
-                    manager.sendKey(sender, "worldAllowed", args.get(0));
+                    manager.allow(args.first());
+                    manager.sendKey(sender, "worldAllowed", args.first());
                     return ExecuteResult.SUCCESS;
                 }
-                manager.sendVKey(sender, Violets.KEY_INVALID_ARG);
+                manager.sendKey(sender, Violets.KEY_INVALID_ARG);
                 return ExecuteResult.FAILED;
             }
         });

@@ -1,0 +1,22 @@
+# 中文语言文件(Chinese Language File)
+# 请使用 UTF-8 编码
+
+chatHead = "[僵尸来袭] "
+
+worldAllowed = "已允许世界 &2%s&r 生成僵尸."
+worldDisallowed = "已禁止世界 &2%s&r 生成僵尸."
+invalidWorldName = "缺少参数或参数不是有效世界名."
+displaySlot0 = "当前不显示计分板."
+displaySlot1 = "当前计分板显示位置为 玩家头顶."
+displaySlot2 = "当前计分板显示位置为 玩家列表."
+displaySlot3 = "当前计分板显示位置为 屏幕右侧."
+slotUsage = "/zombie slot [0|1|2|3]"
+scoreboardDisplay = "&c&l击杀僵尸数"
+debugKillCount = "玩家 %s 已击杀 %d 只僵尸."
+debugKillCool = "玩家 %s 已击杀 %d 只僵尸,已到达冷却限制 %d ."
+debugRestartCooldown = "玩家 %s 已重新进入冷却计时."
+debugSpawnAround = "已在玩家 %s 周围生成一只僵尸."
+debugAroundUptoLimit = "玩家 %s 周围僵尸数量已达上限."
+
+flanSupport = "&a已检测到枪械 Flans 必须类，将启用枪械支持."
+flanNotSupport = "&c未检测到枪械 Flans 必须类，将禁用枪械支持."

@@ -7,4 +7,6 @@ public final class Constant {
 
     public static final String PERM_ADMIN = PLUGIN_ID + ".admin";
 
+    public static final String PLUGIN_VERSION = "2.0.0";
+
 }

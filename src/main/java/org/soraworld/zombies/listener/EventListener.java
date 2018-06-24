@@ -24,7 +24,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (manager.customDrops() && event.getEntity() instanceof Zombie) {
+        if (manager.customDrops && event.getEntity() instanceof Zombie) {
             event.setDroppedExp(manager.randDropExp());
             event.getDrops().clear();
         }
