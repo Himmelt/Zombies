@@ -1,14 +1,14 @@
 package org.soraworld.zombies.config;
 
-import ninja.leaping.configurate.objectmapping.Setting;
+import org.soraworld.violet.config.Setting;
 import org.soraworld.violet.config.VioletManager;
 import org.soraworld.zombies.flans.Flans;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
 import rikka.api.IPlugin;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class ZombiesManager extends VioletManager {
 
@@ -43,7 +43,7 @@ public class ZombiesManager extends VioletManager {
     @Setting
     public int displaySlot = 0;
     @Setting
-    public final HashSet<String> allowWorlds = new HashSet<>();
+    public ArrayList<String> allowWorlds = new ArrayList<>();
 
 
     private final ScoreBoards killsBoard = new ScoreBoards();
@@ -66,8 +66,10 @@ public class ZombiesManager extends VioletManager {
     }
 
     public void allow(String world) {
-        allowWorlds.add(world);
-        save();
+        if (!allowWorlds.contains(world)) {
+            allowWorlds.add(world);
+            save();
+        }
     }
 
     public void disallow(String world) {

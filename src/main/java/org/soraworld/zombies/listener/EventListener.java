@@ -2,11 +2,14 @@ package org.soraworld.zombies.listener;
 
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.soraworld.violet.listener.BukkitListener;
 import org.soraworld.zombies.config.ZombiesManager;
 import org.soraworld.zombies.flans.Flans;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.entity.DestructEntityEvent;
 import rikka.RikkaAPI;
 import rikka.api.entity.IEntity;
 import rikka.api.entity.api.ProjectileSource;
@@ -14,7 +17,7 @@ import rikka.api.entity.living.IPlayer;
 import rikka.api.entity.living.monster.IZombie;
 import rikka.api.entity.projectile.IProjectile;
 
-public class EventListener implements Listener {
+public class EventListener implements BukkitListener {
 
     private final ZombiesManager manager;
 
@@ -47,6 +50,13 @@ public class EventListener implements Listener {
                 IPlayer shooter = Flans.getShooter(damager);
                 if (shooter != null) manager.addKill(shooter.getName());
             }
+        }
+    }
+
+    @Listener
+    public void onEntityDamaged(DestructEntityEvent.Death event) {
+        if (event.getSource() instanceof Player && event.getTargetEntity() instanceof org.spongepowered.api.entity.living.monster.Zombie) {
+            // TODO
         }
     }
 

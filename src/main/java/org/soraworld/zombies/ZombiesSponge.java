@@ -20,9 +20,10 @@ import java.nio.file.Path;
 )
 public class ZombiesSponge extends VioletSponge {
     protected void initPlugin(Path path) {
-        this.manager = new ZombiesManager(this, path);
+        ZombiesManager manager = new ZombiesManager(this, path);
+        this.manager = manager;
         this.manager.load();
-        this.command = new CommandZombie(Constant.PERM_ADMIN, (ZombiesManager) this.manager);
+        this.command = new CommandZombie(Constant.PERM_ADMIN, manager);
     }
 
     public String getId() {
