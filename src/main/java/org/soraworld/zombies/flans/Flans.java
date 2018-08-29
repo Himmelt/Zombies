@@ -1,16 +1,11 @@
 package org.soraworld.zombies.flans;
 
 import com.flansmod.common.guns.EntityBullet;
-import org.soraworld.zombies.config.ZombiesManager;
-import rikka.RikkaAPI;
-import rikka.api.entity.IEntity;
-import rikka.api.entity.living.IPlayer;
-import rikka.bukkit.entity.BukkitEntity;
-import rikka.sponge.entity.SpongeEntity;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.soraworld.zombies.manager.ZombiesManager;
 
-import static rikka.RikkaAPI.BUKKIT;
-import static rikka.RikkaAPI.SPONGE;
-import static rikka.bukkit.server.NMSVersion.*;
+import static org.soraworld.violet.nms.Version.*;
 
 public class Flans {
 
@@ -20,13 +15,13 @@ public class Flans {
         try {
             EntityBullet.class.getName();
             support = true;
-            manager.console("flanSupport");
+            manager.consoleKey("flanSupport");
         } catch (Throwable ignored) {
-            manager.console("flanNotSupport");
+            manager.consoleKey("flanNotSupport");
         }
     }
 
-    public static IPlayer getShooter(org.bukkit.entity.Entity entity) {
+    public static Player getShooter(Entity entity) {
         if (support && entity != null) {
             if (v1_7_R4) {
                 Object mce = ((org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity) entity).getHandle();
@@ -34,7 +29,43 @@ public class Flans {
                 if (mce instanceof EntityBullet) {
                     EntityBullet bullet = (EntityBullet) mce;
                     if (bullet.owner instanceof net.minecraft.server.v1_7_R4.EntityPlayer) {
-                        return RikkaAPI.getPlayer(((net.minecraft.server.v1_7_R4.EntityPlayer) bullet.owner).getBukkitEntity());
+                        return ((net.minecraft.server.v1_7_R4.EntityPlayer) bullet.owner).getBukkitEntity();
+                    }
+                }
+            } else if (v1_8_R1) {
+                Object mce = ((org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity) entity).getHandle();
+                //noinspection ConstantConditions
+                if (mce instanceof EntityBullet) {
+                    EntityBullet bullet = (EntityBullet) mce;
+                    if (bullet.owner instanceof net.minecraft.server.v1_8_R1.EntityPlayer) {
+                        return ((net.minecraft.server.v1_8_R1.EntityPlayer) bullet.owner).getBukkitEntity();
+                    }
+                }
+            } else if (v1_8_R3) {
+                Object mce = ((org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity) entity).getHandle();
+                //noinspection ConstantConditions
+                if (mce instanceof EntityBullet) {
+                    EntityBullet bullet = (EntityBullet) mce;
+                    if (bullet.owner instanceof net.minecraft.server.v1_8_R3.EntityPlayer) {
+                        return ((net.minecraft.server.v1_8_R3.EntityPlayer) bullet.owner).getBukkitEntity();
+                    }
+                }
+            } else if (v1_9_R1) {
+                Object mce = ((org.bukkit.craftbukkit.v1_9_R1.entity.CraftEntity) entity).getHandle();
+                //noinspection ConstantConditions
+                if (mce instanceof EntityBullet) {
+                    EntityBullet bullet = (EntityBullet) mce;
+                    if (bullet.owner instanceof net.minecraft.server.v1_9_R1.EntityPlayer) {
+                        return ((net.minecraft.server.v1_9_R1.EntityPlayer) bullet.owner).getBukkitEntity();
+                    }
+                }
+            } else if (v1_9_R2) {
+                Object mce = ((org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity) entity).getHandle();
+                //noinspection ConstantConditions
+                if (mce instanceof EntityBullet) {
+                    EntityBullet bullet = (EntityBullet) mce;
+                    if (bullet.owner instanceof net.minecraft.server.v1_9_R2.EntityPlayer) {
+                        return ((net.minecraft.server.v1_9_R2.EntityPlayer) bullet.owner).getBukkitEntity();
                     }
                 }
             } else if (v1_10_R1) {
@@ -43,7 +74,7 @@ public class Flans {
                 if (mce instanceof EntityBullet) {
                     EntityBullet bullet = (EntityBullet) mce;
                     if (bullet.owner instanceof net.minecraft.server.v1_10_R1.EntityPlayer) {
-                        return RikkaAPI.getPlayer(((net.minecraft.server.v1_10_R1.EntityPlayer) bullet.owner).getBukkitEntity());
+                        return ((net.minecraft.server.v1_10_R1.EntityPlayer) bullet.owner).getBukkitEntity();
                     }
                 }
             } else if (v1_11_R1) {
@@ -52,7 +83,7 @@ public class Flans {
                 if (mce instanceof EntityBullet) {
                     EntityBullet bullet = (EntityBullet) mce;
                     if (bullet.owner instanceof net.minecraft.server.v1_11_R1.EntityPlayer) {
-                        return RikkaAPI.getPlayer(((net.minecraft.server.v1_11_R1.EntityPlayer) bullet.owner).getBukkitEntity());
+                        return ((net.minecraft.server.v1_11_R1.EntityPlayer) bullet.owner).getBukkitEntity();
                     }
                 }
             } else if (v1_12_R1) {
@@ -61,34 +92,29 @@ public class Flans {
                 if (mce instanceof EntityBullet) {
                     EntityBullet bullet = (EntityBullet) mce;
                     if (bullet.owner instanceof net.minecraft.server.v1_12_R1.EntityPlayer) {
-                        return RikkaAPI.getPlayer(((net.minecraft.server.v1_12_R1.EntityPlayer) bullet.owner).getBukkitEntity());
+                        return ((net.minecraft.server.v1_12_R1.EntityPlayer) bullet.owner).getBukkitEntity();
+                    }
+                }
+            } else if (v1_13_R1) {
+                Object mce = ((org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity) entity).getHandle();
+                //noinspection ConstantConditions
+                if (mce instanceof EntityBullet) {
+                    EntityBullet bullet = (EntityBullet) mce;
+                    if (bullet.owner instanceof net.minecraft.server.v1_13_R1.EntityPlayer) {
+                        return ((net.minecraft.server.v1_13_R1.EntityPlayer) bullet.owner).getBukkitEntity();
+                    }
+                }
+            } else if (v1_13_R2) {
+                Object mce = ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity) entity).getHandle();
+                //noinspection ConstantConditions
+                if (mce instanceof EntityBullet) {
+                    EntityBullet bullet = (EntityBullet) mce;
+                    if (bullet.owner instanceof net.minecraft.server.v1_13_R2.EntityPlayer) {
+                        return ((net.minecraft.server.v1_13_R2.EntityPlayer) bullet.owner).getBukkitEntity();
                     }
                 }
             }
         }
         return null;
     }
-
-    public static IPlayer getShooter(org.spongepowered.api.entity.Entity entity) {
-        if (support && entity != null) {
-            if (entity instanceof EntityBullet) {
-                EntityBullet bullet = (EntityBullet) entity;
-                if (bullet.owner instanceof org.spongepowered.api.entity.living.player.Player) {
-                    return RikkaAPI.getPlayer((org.spongepowered.api.entity.living.player.Player) bullet.owner);
-                }
-            }
-        }
-        return null;
-    }
-
-    public static IPlayer getShooter(IEntity entity) {
-        if (support && BUKKIT && entity instanceof BukkitEntity) {
-            return getShooter(((BukkitEntity) entity).getSource());
-        }
-        if (support && SPONGE && entity instanceof SpongeEntity) {
-            return getShooter(((SpongeEntity) entity).getSource());
-        }
-        return null;
-    }
-
 }

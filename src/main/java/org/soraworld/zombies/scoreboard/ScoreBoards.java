@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-import rikka.RikkaAPI;
 
 public class ScoreBoards {
 
@@ -14,12 +13,10 @@ public class ScoreBoards {
     private int displaySlot = 3;
 
     public ScoreBoards() {
-        if (RikkaAPI.BUKKIT) {
-            killsBoard = Bukkit.getScoreboardManager().getNewScoreboard();
-            killObjective = killsBoard.getObjective(DisplaySlot.SIDEBAR);
-            if (killObjective == null) {
-                killObjective = killsBoard.registerNewObjective("kills", "dummy");
-            }
+        killsBoard = Bukkit.getScoreboardManager().getNewScoreboard();
+        killObjective = killsBoard.getObjective(DisplaySlot.SIDEBAR);
+        if (killObjective == null) {
+            killObjective = killsBoard.registerNewObjective("kills", "dummy");
         }
     }
 

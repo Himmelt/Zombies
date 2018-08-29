@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.soraworld.zombies.config.ZombiesManager;
+import org.soraworld.zombies.manager.ZombiesManager;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,7 +34,7 @@ public class SpawnTask extends BukkitRunnable {
             if (System.currentTimeMillis() - last < manager.killCoolTime * 1000) {
                 spawnZombiesAround(player);
             } else {
-                if (manager.debug) manager.consoleKey("debugRestartCooldown", player.getName());
+                if (manager.isDebug()) manager.consoleKey("debugRestartCooldown", player.getName());
                 cools.put(player.getName(), System.currentTimeMillis());
                 manager.clearKills(player.getName());
             }
@@ -70,10 +70,10 @@ public class SpawnTask extends BukkitRunnable {
                 zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6000, manager.randSpeed()), false);
                 zombie.addPotionEffect(FIRE_RESISTANCE);
                 zombie.setCanPickupItems(false);
-                if (manager.debug) manager.consoleKey("debugSpawnAround", player.getName());
+                if (manager.isDebug()) manager.consoleKey("debugSpawnAround", player.getName());
             }
         } else {
-            if (manager.debug) manager.consoleKey("debugAroundUptoLimit", player.getName());
+            if (manager.isDebug()) manager.consoleKey("debugAroundUptoLimit", player.getName());
         }
     }
 
@@ -92,7 +92,7 @@ public class SpawnTask extends BukkitRunnable {
         Block block;
         for (int i = -1; i <= radius && y + i < 255 && y - i > 1; i++) {
             block = world.getBlockAt(x, y + i, z);
-            if (block.getType().isSolid() || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER) {
+            if (block.getType().isSolid() || block.getType() == Material.WATER || block.getType() == Material.LEGACY_STATIONARY_WATER) {
                 block = world.getBlockAt(x, y + i + 1, z);
                 if (block.getType().isTransparent()) {
                     block = world.getBlockAt(x, y + i + 2, z);
@@ -104,7 +104,7 @@ public class SpawnTask extends BukkitRunnable {
                 block = world.getBlockAt(x, y - i - 1, z);
                 if (block.getType().isTransparent()) {
                     block = world.getBlockAt(x, y - i - 2, z);
-                    if (block.getType().isSolid() || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+                    if (block.getType().isSolid() || block.getType() == Material.WATER || block.getType() == Material.LEGACY_STATIONARY_WATER)
                         return y - i - 1;
                 }
             }
@@ -118,5 +118,4 @@ public class SpawnTask extends BukkitRunnable {
         task = new SpawnTask();
         task.runTaskTimer(plugin, manager.refresh(), manager.refresh());
     }
-
 }

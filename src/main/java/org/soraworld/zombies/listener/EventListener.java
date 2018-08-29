@@ -1,23 +1,18 @@
 package org.soraworld.zombies.listener;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.soraworld.violet.listener.BukkitListener;
-import org.soraworld.zombies.config.ZombiesManager;
+import org.bukkit.projectiles.ProjectileSource;
 import org.soraworld.zombies.flans.Flans;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.entity.DestructEntityEvent;
-import rikka.RikkaAPI;
-import rikka.api.entity.IEntity;
-import rikka.api.entity.api.ProjectileSource;
-import rikka.api.entity.living.IPlayer;
-import rikka.api.entity.living.monster.IZombie;
-import rikka.api.entity.projectile.IProjectile;
+import org.soraworld.zombies.manager.ZombiesManager;
 
-public class EventListener implements BukkitListener {
+public class EventListener implements Listener {
 
     private final ZombiesManager manager;
 
@@ -35,29 +30,21 @@ public class EventListener implements BukkitListener {
 
     @EventHandler
     public void onEntityDamaged(EntityDamageByEntityEvent event) {
-        IEntity damager = RikkaAPI.getEntity(event.getDamager());
-        IEntity damagee = RikkaAPI.getEntity(event.getEntity());
-        if (damagee instanceof IZombie) {
-            IZombie zombie = (IZombie) damagee;
-            if (zombie.health() - event.getDamage() > 0.0D) return;
-            if (damager instanceof IPlayer) {
-                IPlayer player = (IPlayer) damager;
+        Entity damager = event.getDamager();
+        Entity damagee = event.getEntity();
+        if (damagee instanceof Zombie) {
+            Zombie zombie = (Zombie) damagee;
+            if (zombie.getHealth() - event.getDamage() > 0.0D) return;
+            if (damager instanceof Player) {
+                Player player = (Player) damager;
                 manager.addKill(player.getName());
-            } else if (damager instanceof IProjectile) {
-                ProjectileSource source = ((IProjectile) damager).getShooter();
-                if (source instanceof IPlayer) manager.addKill(((IPlayer) source).getName());
+            } else if (damager instanceof Projectile) {
+                ProjectileSource source = ((Projectile) damager).getShooter();
+                if (source instanceof Player) manager.addKill(((Player) source).getName());
             } else {
-                IPlayer shooter = Flans.getShooter(damager);
+                Player shooter = Flans.getShooter(damager);
                 if (shooter != null) manager.addKill(shooter.getName());
             }
         }
     }
-
-    @Listener
-    public void onEntityDamaged(DestructEntityEvent.Death event) {
-        if (event.getSource() instanceof Player && event.getTargetEntity() instanceof org.spongepowered.api.entity.living.monster.Zombie) {
-            // TODO
-        }
-    }
-
 }

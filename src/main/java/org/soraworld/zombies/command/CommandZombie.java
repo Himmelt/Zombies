@@ -1,77 +1,63 @@
 package org.soraworld.zombies.command;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.soraworld.violet.command.VioletCommand;
-import org.soraworld.violet.constant.Violets;
-import org.soraworld.zombies.config.ZombiesManager;
-import rikka.api.command.CommandArgs;
-import rikka.api.command.ExecuteResult;
-import rikka.api.command.ICommandSender;
-import rikka.api.command.IICommand;
-import rikka.api.entity.living.IPlayer;
+import org.soraworld.violet.command.Paths;
+import org.soraworld.violet.command.Sub;
+import org.soraworld.violet.manager.SpigotManager;
+import org.soraworld.zombies.manager.ZombiesManager;
 
-public class CommandZombie extends VioletCommand {
-
-    public CommandZombie(String perm, final ZombiesManager manager) {
-        super(perm, false, manager, "zombie");
-        addSub(new IICommand(perm, false, "slot") {
-            public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
-                if (args.empty()) {
-                    manager.sendKey(sender, "displaySlot" + manager.displaySlot);
-                } else if (args.get(0).matches("[0-3]")) {
-                    manager.displaySlot(Integer.valueOf(args.get(0)));
-                    manager.sendKey(sender, "displaySlot" + manager.displaySlot);
-                } else {
-                    manager.sendKey(sender, "slotUsage");
-                }
-                return ExecuteResult.SUCCESS;
-            }
-        });
-        addSub(new IICommand(perm, false, "allow") {
-            public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
-                if (sender instanceof IPlayer) {
-                    if (args.empty()) {
-                        // TODO
-                        String world = ((IPlayer) sender).getWorld().toString();
-                        manager.allow(world);
-                        manager.sendKey(sender, "worldAllowed", world);
-                    } else {
-                        manager.allow(args.get(0));
-                        manager.sendKey(sender, "worldAllowed", args.get(0));
-                    }
-                    return ExecuteResult.SUCCESS;
-                }
-                if (args.notEmpty()) {
-                    manager.allow(args.first());
-                    manager.sendKey(sender, "worldAllowed", args.first());
-                    return ExecuteResult.SUCCESS;
-                }
-                manager.sendKey(sender, Violets.KEY_INVALID_ARG);
-                return ExecuteResult.FAILED;
-            }
-        });
-        addSub(new IICommand(perm, false, "disallow") {
-            public ExecuteResult execute(ICommandSender sender, CommandArgs args) {
-                if (sender instanceof Player) {
-                    if (args.empty()) {
-                        String worldName = ((Player) sender).getWorld().getName();
-                        manager.disallow(worldName);
-                        manager.sendKey(sender, "worldDisallowed", worldName);
-                    } else {
-                        manager.disallow(args.get(0));
-                        manager.sendKey(sender, "worldDisallowed", args.get(0));
-                    }
-                    return ExecuteResult.SUCCESS;
-                }
-                if (args.notEmpty()) {
-                    manager.disallow(args.get(0));
-                    manager.sendKey(sender, "worldDisallowed", args.get(0));
-                    return ExecuteResult.SUCCESS;
-                }
-                manager.sendKey(sender, "invalidWorldName");
-                return ExecuteResult.FAILED;
-            }
-        });
+public class CommandZombie {
+    @Sub(perm = "admin")
+    public static void slot(SpigotManager manager, CommandSender sender, Paths args) {
+        if (manager instanceof ZombiesManager) {
+            ZombiesManager zbm = (ZombiesManager) manager;
+            if (args.empty()) {
+                zbm.sendKey(sender, "displaySlot" + zbm.displaySlot);
+            } else if (args.get(0).matches("[0-3]")) {
+                zbm.displaySlot(Integer.valueOf(args.get(0)));
+                zbm.sendKey(sender, "displaySlot" + zbm.displaySlot);
+            } else zbm.sendKey(sender, "slotUsage");
+        }
     }
 
+    @Sub(perm = "admin")
+    public static void allow(SpigotManager manager, CommandSender sender, Paths args) {
+        if (manager instanceof ZombiesManager) {
+            ZombiesManager zbm = (ZombiesManager) manager;
+            if (sender instanceof Player) {
+                if (args.empty()) {
+                    String world = ((Player) sender).getWorld().getName();
+                    zbm.allow(world);
+                    zbm.sendKey(sender, "worldAllowed", world);
+                } else {
+                    zbm.allow(args.get(0));
+                    zbm.sendKey(sender, "worldAllowed", args.get(0));
+                }
+            } else if (args.notEmpty()) {
+                zbm.allow(args.first());
+                zbm.sendKey(sender, "worldAllowed", args.first());
+            } else zbm.sendKey(sender, "invalidArg");
+        }
+    }
+
+    @Sub(perm = "admin")
+    public static void disallow(SpigotManager manager, CommandSender sender, Paths args) {
+        if (manager instanceof ZombiesManager) {
+            ZombiesManager zbm = (ZombiesManager) manager;
+            if (sender instanceof Player) {
+                if (args.empty()) {
+                    String worldName = ((Player) sender).getWorld().getName();
+                    zbm.disallow(worldName);
+                    zbm.sendKey(sender, "worldDisallowed", worldName);
+                } else {
+                    zbm.disallow(args.get(0));
+                    zbm.sendKey(sender, "worldDisallowed", args.get(0));
+                }
+            } else if (args.notEmpty()) {
+                zbm.disallow(args.get(0));
+                zbm.sendKey(sender, "worldDisallowed", args.get(0));
+            } else zbm.sendKey(sender, "invalidWorldName");
+        }
+    }
 }

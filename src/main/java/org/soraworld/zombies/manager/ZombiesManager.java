@@ -1,16 +1,17 @@
-package org.soraworld.zombies.config;
+package org.soraworld.zombies.manager;
 
-import org.soraworld.violet.config.Setting;
-import org.soraworld.violet.config.VioletManager;
+import org.soraworld.hocon.node.Setting;
+import org.soraworld.violet.manager.SpigotManager;
+import org.soraworld.violet.plugin.SpigotPlugin;
+import org.soraworld.violet.util.ChatColor;
 import org.soraworld.zombies.flans.Flans;
 import org.soraworld.zombies.scoreboard.ScoreBoards;
-import rikka.api.IPlugin;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ZombiesManager extends VioletManager {
+public class ZombiesManager extends SpigotManager {
 
     @Setting
     public int minSpeed = 0;
@@ -45,12 +46,15 @@ public class ZombiesManager extends VioletManager {
     @Setting
     public ArrayList<String> allowWorlds = new ArrayList<>();
 
-
     private final ScoreBoards killsBoard = new ScoreBoards();
     private final HashMap<String, Integer> kills = new HashMap<>();
 
-    public ZombiesManager(IPlugin plugin, Path path) {
+    public ZombiesManager(SpigotPlugin plugin, Path path) {
         super(plugin, path);
+    }
+
+    public ChatColor defChatColor() {
+        return ChatColor.AQUA;
     }
 
     public void afterLoad() {
@@ -125,5 +129,4 @@ public class ZombiesManager extends VioletManager {
     public int randDropExp() {
         return (int) (minDropExp + Math.abs(maxDropExp - minDropExp) * Math.random());
     }
-
 }
