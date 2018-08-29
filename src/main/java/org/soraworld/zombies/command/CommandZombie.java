@@ -8,7 +8,7 @@ import org.soraworld.violet.manager.SpigotManager;
 import org.soraworld.zombies.manager.ZombiesManager;
 
 public class CommandZombie {
-    @Sub(perm = "admin")
+    @Sub(perm = "admin", tabs = {"0", "1", "2", "3"})
     public static void slot(SpigotManager manager, CommandSender sender, Paths args) {
         if (manager instanceof ZombiesManager) {
             ZombiesManager zbm = (ZombiesManager) manager;
@@ -21,7 +21,7 @@ public class CommandZombie {
         }
     }
 
-    @Sub(perm = "admin")
+    @Sub(perm = "admin", tabs = {"world"})
     public static void allow(SpigotManager manager, CommandSender sender, Paths args) {
         if (manager instanceof ZombiesManager) {
             ZombiesManager zbm = (ZombiesManager) manager;
@@ -41,7 +41,7 @@ public class CommandZombie {
         }
     }
 
-    @Sub(perm = "admin")
+    @Sub(perm = "admin", tabs = {"world"})
     public static void disallow(SpigotManager manager, CommandSender sender, Paths args) {
         if (manager instanceof ZombiesManager) {
             ZombiesManager zbm = (ZombiesManager) manager;

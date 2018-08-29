@@ -13,37 +13,37 @@ import java.util.HashMap;
 
 public class ZombiesManager extends SpigotManager {
 
-    @Setting
+    @Setting(comment = "comment.minSpeed")
     public int minSpeed = 0;
-    @Setting
+    @Setting(comment = "comment.maxSpeed")
     public int maxSpeed = 1;
-    @Setting
+    @Setting(comment = "comment.minHealth")
     public int minHealth = 10;
-    @Setting
+    @Setting(comment = "comment.maxHealth")
     public int maxHealth = 20;
-    @Setting
+    @Setting(comment = "comment.minSpawnRadius")
     public int minSpawnRadius = 15;
-    @Setting
+    @Setting(comment = "comment.maxSpawnRadius")
     public int maxSpawnRadius = 25;
-    @Setting
+    @Setting(comment = "comment.refresh")
     public int refresh = 50;
-    @Setting
+    @Setting(comment = "comment.spawnLimit")
     public int spawnLimit = 30;
-    @Setting
+    @Setting(comment = "comment.killCoolLimit")
     public int killCoolLimit = 80;
-    @Setting
+    @Setting(comment = "comment.killCoolTime")
     public int killCoolTime = 300;
-    @Setting
+    @Setting(comment = "comment.babyChance")
     public double babyChance = 0.0F;
-    @Setting
+    @Setting(comment = "comment.customDrops")
     public boolean customDrops = false;
-    @Setting
+    @Setting(comment = "comment.minDropExp")
     public int minDropExp = 0;
-    @Setting
+    @Setting(comment = "comment.maxDropExp")
     public int maxDropExp = 0;
-    @Setting
+    @Setting(comment = "comment.displaySlot")
     public int displaySlot = 0;
-    @Setting
+    @Setting(comment = "comment.allowWorlds")
     public ArrayList<String> allowWorlds = new ArrayList<>();
 
     private final ScoreBoards killsBoard = new ScoreBoards();
@@ -58,6 +58,9 @@ public class ZombiesManager extends SpigotManager {
     }
 
     public void afterLoad() {
+        if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
+        killsBoard.setDisplaySlot(displaySlot);
+        killsBoard.setDisplayName(trans("scoreboardDisplay"));
         Flans.checkFlans(this);
     }
 
@@ -106,14 +109,14 @@ public class ZombiesManager extends SpigotManager {
         if (name == null || name.isEmpty()) return;
         int kill = getKill(name);
         kills.put(name, kill + 1);
-        //killsBoard.update(name, kill + 1);
+        killsBoard.update(name, kill + 1);
         if (debug) consoleKey("debugKillCount", name, kill + 1);
     }
 
     public void displaySlot(int slot) {
         displaySlot = slot;
         if (displaySlot < 0 || displaySlot > 3) displaySlot = 0;
-        //killsBoard.setDisplaySlot(slot);
+        killsBoard.setDisplaySlot(slot);
     }
 
     public boolean killCool(String name) {

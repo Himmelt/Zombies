@@ -20,3 +20,22 @@ debugAroundUptoLimit = "Zombies around player %s is upto the limit."
 
 flansSupport = "Support Flans-Mod success."
 flansNotSupport = "Support Flans-Mod failed."
+
+comment {
+  minSpeed = "Zombies walk min speed(speed potion effect level)"
+  maxSpeed = "Zombies walk max speed(speed potion effect level)"
+  minHealth = "Zombies' min health"
+  maxHealth = "Zombies' max health"
+  minSpawnRadius = "Zombie min spawn radius (center player)"
+  maxSpawnRadius = "Zombie max spawn radius (center player)"
+  refresh = "Zombie trying spawn(refresh) time (ticks, 1s == 20tick)"
+  spawnLimit = "Zombies' amount limit around player"
+  killCoolLimit = "limit of killing count , up to this limit ,\n will stop spawn zombies around the player, after the cooldown time , continue spawn."
+  killCoolTime = "time for refresh kill count limit cooldown (unit: s)"
+  babyChance = "chance of baby zombie"
+  customDrops = "customize drops ，if true: using custom drops ; if false, drop normal."
+  minDropExp = "custom drop min experence"
+  maxDropExp = "custom drop max experence"
+  displaySlot = "scoreboard location: 0, don't show; 1:over players' head 2:players list 3:right side of the screen"
+  allowWorlds = "worlds' names which allow zombies' spawning (list)"
+}

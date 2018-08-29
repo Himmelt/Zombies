@@ -1,6 +1,9 @@
 package org.soraworld.zombies.task;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -92,19 +95,19 @@ public class SpawnTask extends BukkitRunnable {
         Block block;
         for (int i = -1; i <= radius && y + i < 255 && y - i > 1; i++) {
             block = world.getBlockAt(x, y + i, z);
-            if (block.getType().isSolid() || block.getType() == Material.WATER || block.getType() == Material.LEGACY_STATIONARY_WATER) {
+            if (block.getType().isSolid() || block.isLiquid()) {
                 block = world.getBlockAt(x, y + i + 1, z);
-                if (block.getType().isTransparent()) {
+                if (!block.getType().isOccluding()) {
                     block = world.getBlockAt(x, y + i + 2, z);
-                    if (block.getType().isTransparent()) return y + i + 1;
+                    if (!block.getType().isOccluding()) return y + i + 1;
                 }
             }
             block = world.getBlockAt(x, y - i, z);
-            if (block.getType().isTransparent()) {
+            if (!block.getType().isOccluding()) {
                 block = world.getBlockAt(x, y - i - 1, z);
-                if (block.getType().isTransparent()) {
+                if (!block.getType().isOccluding()) {
                     block = world.getBlockAt(x, y - i - 2, z);
-                    if (block.getType().isSolid() || block.getType() == Material.WATER || block.getType() == Material.LEGACY_STATIONARY_WATER)
+                    if (block.getType().isSolid() || block.isLiquid())
                         return y - i - 1;
                 }
             }

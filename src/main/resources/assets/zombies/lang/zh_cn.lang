@@ -20,3 +20,22 @@ debugAroundUptoLimit = "玩家 %s 周围僵尸数量已达上限."
 
 flanSupport = "&a已检测到枪械 Flans 必须类，将启用枪械支持."
 flanNotSupport = "&c未检测到枪械 Flans 必须类，将禁用枪械支持."
+
+comment {
+  minSpeed = "僵尸行走速度最小值(迅捷药水效果等级)"
+  maxSpeed = "僵尸行走速度最大值(迅捷药水效果等级)"
+  minHealth = "生成僵尸的最小生命值"
+  maxHealth = "生成僵尸的最大生命值"
+  minSpawnRadius = "生成范围最小半径(以玩家为中心)"
+  maxSpawnRadius = "生成范围最大半径(以玩家为中心)"
+  refresh = "僵尸尝试生成刷新时间(ticks，1秒 == 20 tick)"
+  spawnLimit = "(玩家周围)僵尸生成数量限制"
+  killCoolLimit = "在冷却时间内的击杀上限，\n击杀数到达该值后，周围不再继续生成僵尸，超过冷却时间后继续生成。"
+  killCoolTime = "击杀数量刷新时间(冷却时间)(秒)"
+  babyChance = "生成小僵尸的概率"
+  customDrops = "击杀僵尸自定义掉落物品，true:自定义掉落；false：正常掉落"
+  minDropExp = "击杀僵尸自定义经验掉落最小值"
+  maxDropExp = "击杀僵尸自定义经验掉落最大值"
+  displaySlot = "记分板显示位置，0：不显示记分板 1:头顶 2:玩家列表 3:屏幕右侧"
+  allowWorlds = "允许生成僵尸的世界名(列表)"
+}
